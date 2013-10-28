@@ -184,20 +184,21 @@ function menuClick(){ // checks for menu click
 	mySel = 0;
 	*/
 }
-function cellClick(){
-	for (var i = 0; i < Cells.length; i++) {
+function cellClick(){ // checks if a cell was clicked
+	for (var i = 0; i < Cells.length; i++) { // cycle through cell 2d array 
 		for (var j = 0; j < Cells[i].length; j++) {
-			var imageData;
-			drawCell(fk_ctx,i,j,'blue');
-			imageData = fk_ctx.getImageData(mx, my, 1, 1);
+			var imageData; // RBG data for canvas
+			drawCell(fk_ctx,i,j,'blue'); // draws cell on non-displayed canvas
+			imageData = fk_ctx.getImageData(mx, my, 1, 1); // gets RBG data for mouse cords
 			clear(fk_ctx);
 			if (imageData.data[3] > 0) {//3 is alpha value of colour at mouse coordinates
+			// if there is color then cell was clicked
 				try{
-				popUpMenu(mx,my,i,j);
+				popUpMenu(mx,my,i,j); // sends info to menu for it to be displayed
 				}catch(err){console.log(err);};
-				fillCell(i,j,"5");
-				mySel = Cells[i][j];
-				offsetx = mx - mySel.x;
+				fillCell(i,j,"5"); // when clicked fill this. this is just for testing, need to update menu click to fill correctly
+				mySel = Cells[i][j]; // sets the clicked cell to mySel to be used for displaing info // might use this instead of menu object
+				offsetx = mx - mySel.x; // mouse cords correction
 				offsety = my - mySel.y;
 				mySel.x = mx - offsetx; 
 				mySel.y = my - offsety;
@@ -209,48 +210,49 @@ function cellClick(){
 	
 	mySel = 0;
 }
-function popUpMenu(x,y,i,j){
-	dispMenuHandler = true;
-	menu.x = x;
+function popUpMenu(x,y,i,j){ // sets new menu info 
+	dispMenuHandler = true; // tells draw to disp menu
+	menu.x = x; // mouse
 	menu.y = y;
-	menu.i = i;
+	menu.i = i;  // cell
 	menu.j = j;
 }
-function getMouse(e) {
-      var element = canvas, offsetX = 0, offsetY = 0;
-      if (element.offsetParent) {
+function getMouse(e) { // mouse offsets
+      var element = canvas, offsetX = 0, offsetY = 0; //gets uncorrected mouse cords
+      if (element.offsetParent) { //if html has offset 
         do {
-          offsetX += element.offsetLeft;
+          offsetX += element.offsetLeft; // add to offset counters
           offsetY += element.offsetTop;
         } while ((element = element.offsetParent));
       }
-      offsetX += stylePaddingLeft;
+      offsetX += stylePaddingLeft; // add padding info to offset
       offsetY += stylePaddingTop;
 
-      offsetX += styleBorderLeft;
+      offsetX += styleBorderLeft; // add boarder to offset
       offsetY += styleBorderTop;
 
-      mx = e.pageX - offsetX;
+      mx = e.pageX - offsetX; // create the corrected mouse cords
       my = e.pageY - offsetY;
 }
-function fillCell(i,j,stuff){
+function fillCell(i,j,stuff){// fills cell with passed info
+	// i,j cell, stuff is what to put into it
 	try{
+	//add assert that num is a string number 1 - 9
 	Cells[i][j].num = String(stuff);
 	}catch(err){alert(err);}
 }
-function drawfilledCell(i,j){
+function drawfilledCell(i,j){ // display number in cell
 	ctx.font="50px Georgia";
 	try{
 	ctx.fillText(Cells[i][j].num,Cells[i][j].x+15,(Cells[i][j].y-15)+canvas_size/9);
 	}catch(err){alert(err);}
 }
-function drawStuffInCells(){
-	//alert("redrawing cells");
+function drawStuffInCells(){ // dispaly all numbers in cells
 	ctx.fillStyle = 'black';
 	for(var i = 0; i < Cells.length; i++){
 		for(var j = 0; j < Cells[i].length; j++){
 			try{
-			drawfilledCell(i,j);
+			drawfilledCell(i,j); // display number in passed cell 
 			}catch(err){alert(err);}
 		}
 	}
