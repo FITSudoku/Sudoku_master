@@ -13,6 +13,7 @@ var dispMenuHandler = false; // handler to display menu object
 var intervalHandler; // handler for interval and auto run of draw function
 var Cells = []; // 2d array of position and number in each cell
 var mySel = 0; // copy of cell element to draw
+var errCell = 0; // copy of cell that has an error
 var selColor =  "#FFFF00"; //color cell turns when it is clicked on
 var selWidth = 5; // width of boarder around cell when clicked
 var mx, my; //mouse coords 
@@ -65,9 +66,10 @@ function solver(){ // solves the puzzle
 			count++;
 		}
 	}
+	dispMenuHandler = false;
 	invalidate();
 	}catch(err){console.log(err);}
-
+	mySel = 0;
 }
 function checker(){ // checks puzzle for correctness
 	var count = 0;
@@ -76,9 +78,10 @@ function checker(){ // checks puzzle for correctness
 		for(var j = 0; j < Cells[i].length; j++){
 			if(!(Cells[j][i].num == solution_puzzle[count])){//if puzzle does not match solution
 				alert("Sorry, that solution is not correct\nProblem in Highlighted cell");
-				mySel = Cells[j][i]; // tells it to highlight that cell
 				dispMenuHandler = false; // do not display menu
 				invalidate();
+				errCell = Cells[j][i];
+				mySel = 0;
 				return;
 			}
 			count++;
@@ -124,13 +127,20 @@ function draw(){ // all calls to draw on main canvas
 			drawMenu();
 		}
 		if (mySel !== 0) { // if there is a selection, highlight cell 
-			//needs to be turned into its own function.........................
-			ctx.strokeStyle = selColor; 
-			ctx.lineWidth = selWidth;
-			ctx.strokeRect(mySel.x,mySel.y,mySel.size,mySel.size); // draws boarder around selected cell
+			errCell = 0;
+			highlight(mySel.x,mySel.y,mySel.size,selColor,selWidth);
 		}
+		if (errCell !== 0) { // if there is a error, highlight cell 
+			highlight(errCell.x,errCell.y,errCell.size,'blue',selWidth);
+		}
+
 		canvasValid = true; // canvas is now up to date
 	}
+} 
+function highlight(x,y,size,color,width){ // highlights given cell 
+			ctx.strokeStyle = color; 
+			ctx.lineWidth = width;
+			ctx.strokeRect(x,y,size,size); // draws boarder around selected cell
 }
 function invalidate(){ // canvas is no longer uptodate, needs to be redrawn
 	canvasValid = false;
@@ -240,9 +250,7 @@ function clear(context){ // removes all objects on passed canvas
 function mDown(e){ // what happens when mouse left button is depressed
 	getMouse(e); // gets corrected mouse coords with offsets
 	clear(ctx); // clears main canvas
-	if(!menuClick()){ // checks to see if menu is clicked
-		cellClick();// checks to see if cell is clicked
-	}
+	cellClick();
 	clear(ctx); // clears canvas again.....might not need this
 	invalidate();
 }
@@ -264,6 +272,7 @@ function menuClick(){ // checks for menu click
 				console.log(str); // tell console what number was clicked, dugbug stuff
 				invalidate();
 				dispMenuHandler = false; // no longer disp menu
+				mySel = 0;
 				return true;
 			}
 		}																			
@@ -271,7 +280,6 @@ function menuClick(){ // checks for menu click
 	
 }
 function cellClick(){ // checks if a cell was clicked
-	mySel = 0;
 	for (var i = 0; i < Cells.length; i++) { // cycle through cell 2d array 
 		for (var j = 0; j < Cells[i].length; j++) {
 			var imageData; // RBG data for canvas
@@ -284,6 +292,11 @@ function cellClick(){ // checks if a cell was clicked
 					alert("Sorry, This value cannot be changed");
 					dispMenuHandler = false;
 					mySel = 0;
+					return;
+				}else if(mySel == Cells[i][j]){
+					menuClick();
+					mySel = 0;
+					invalidate();
 					return;
 				}
 				try{
