@@ -22,12 +22,12 @@ var menu = new Menu(); // menu object that holds data about position
 var sample_puzzle = [' ',' ',' ',1,' ',5,' ',' ',' ',1,4,' ',' ',' ',' ',6,7,' ',' ',8
 					,' ',' ',' ',2,4,' ',' ',' ',6,3,' ',7,' ',' ',1,' ',9,' ',' ',' '
 					,' ',' ',' ',' ',3,' ',1,' ',' ',9,' ',5,2,' ',' ',' ',7,2,' ',' ',' '
-					,8,' ',' ',2,6,' ',' ',' ',' ',3,5,' ',' ',' ',4,' ',9,' ',' ',' ']
+					,8,' ',' ',2,6,' ',' ',' ',' ',3,5,' ',' ',' ',4,' ',9,' ',' ',' '] // givens to start the game
 					 
 var solution_puzzle = [6,7,2,1,4,5,3,9,8,1,4,5,9,8,3,6,7,2,3,8,9,7,6,2,4,5,1,2,6,3,5,7,4,8
 						,1,9,9,5,8,6,2,1,7,4,3,7,1,4,3,9,8,5,2,6,5,9,7,2,3,6,1,8,4,4,2,6,8,1
 						,7,9,3,5,8,3,1,4,5,9,2,6,7];					 //An array of entries for the sample puzzle
-function checkdata(){
+function checkdata(){ // checks to make sure the given and solution are of equal length
 	given = "given:"+sample_puzzle.length;
 	sol = "sol:"+solution_puzzle.length;
 	console.log(given);
@@ -41,7 +41,7 @@ function checkdata(){
 	console.log(givens);
 	console.log(solved);
 }
-function solver(){
+function solver(){ // solves the puzzle
 	var count = 0;
 	var change = ' ';
 	try{
@@ -49,9 +49,8 @@ function solver(){
 		for(var j = 0; j < Cells[i].length; j++){
 		
 			change = "change:"+Cells[j][i].num;
-			Cells[j][i].num = solution_puzzle[count];
-			change += ":"+Cells[j][i].num;
-			//console.log(change);
+			Cells[j][i].num = solution_puzzle[count]; // sets cell value to the solution
+			change += ":"+Cells[j][i].num; 
 			count++;
 		}
 	}
@@ -59,15 +58,15 @@ function solver(){
 	}catch(err){console.log(err);}
 
 }
-function checker(){
+function checker(){ // checks puzzle for correctness
 	var count = 0;
 	try{
 	for(var i = 0; i < Cells.length; i++){
 		for(var j = 0; j < Cells[i].length; j++){
-			if(!(Cells[j][i].num == solution_puzzle[count])){
-				mySel = Cells[j][i];
+			if(!(Cells[j][i].num == solution_puzzle[count])){//if puzzle does not match solution
 				alert("Sorry, that solution is not correct\nProblem in Highlighted cell");
-				dispMenuHandler = false;
+				mySel = Cells[j][i]; // tells it to highlight that cell
+				dispMenuHandler = false; // do not display menu
 				invalidate();
 				return;
 			}
@@ -75,7 +74,7 @@ function checker(){
 		}
 	}
 	}catch(err){console.log(err);}
-	alert("solution is correct!");
+	alert("solution is correct!"); // no errors, soultion is correct
 }
 function init(cSize){
 	checkdata();
@@ -166,6 +165,7 @@ function drawMenu(){ // draws menu on menu canvas
 	ctx.font="14px Georgia";
 	ctx.fillStyle = 'white';
 	for(var i = 1; i < 4; i++){ // displays numbers in menu to add to selected cell
+		// need to change literals to vars......-10
 		ctx.fillText(i,Cells[menu.i][menu.j].x+(canvas_size/9)*.3*i-10,(Cells[menu.i][menu.j].y)+(canvas_size/9)*.3);
 		ctx.fillText(3+i,Cells[menu.i][menu.j].x+(canvas_size/9)*.3*i-10,(Cells[menu.i][menu.j].y)+(canvas_size/9)*.6);
 		ctx.fillText(6+i,Cells[menu.i][menu.j].x+(canvas_size/9)*.3*i-10,(Cells[menu.i][menu.j].y)+(canvas_size/9)*.9);
@@ -181,7 +181,7 @@ function drawCell(contex,i,j,color,size){ // used to draw on fake canvas for cli
 	invalidate();
 	}catch(err){console.log(err);}
 }
-function drawMenuCell(contex,x,y,color,size){ // used to draw on fake canvas for click detection on cells 
+function drawMenuCell(contex,x,y,color,size){ // used to draw on fake canvas for click detection on menu
 	try{
 	contex.lineWidth = 2;
 	contex.fillStyle = color;
@@ -205,7 +205,7 @@ function addCell(index,x,y,fill,num){ // adds cell to Cell array
 	}catch(err){console.log(err);}
 }
 function createCells(){ // creates cell 2d array
-	var color = "#000080"; // not used
+	var color = "#000080"; 
 	var num = ' '; // what is in the cell at the start
 	try{
 		for(var i = 0; i < 9; i++){
@@ -224,8 +224,8 @@ function mDown(e){ // what happens when mouse left button is depressed
 	getMouse(e); // gets corrected mouse coords with offsets
 	clear(ctx); // clears main canvas
 	if(!menuClick()){ // checks to see if menu is clicked
-	cellClick();
-	}// checks to see if cell is clicked
+		cellClick();// checks to see if cell is clicked
+	}
 	clear(ctx); // clears canvas again.....might not need this
 	invalidate();
 }
@@ -238,9 +238,8 @@ function menuClick(){ // checks for menu click
 		for (var i = 0; i < 3; i++) {
 			counter++;
 			var imageData;
-			drawMenuCell(menu_ctx,Cells[menu.i][menu.j].x+((canvas_size/27)*i),Cells[menu.i][menu.j].y+((canvas_size/27)*j),'blue',canvas_size/27);
-			imageData = menu_ctx.getImageData(mx, my, 1, 1);
-			//menu.stroke();
+			drawMenuCell(menu_ctx,Cells[menu.i][menu.j].x+((canvas_size/27)*i),Cells[menu.i][menu.j].y+((canvas_size/27)*j),'blue',canvas_size/27);// draws color squares on menu one at a time
+			imageData = menu_ctx.getImageData(mx, my, 1, 1); // gets RBG data for mouse coords on canvas
 			clear(menu_ctx);
 			if (imageData.data[3] > 0) {//3 is alpha value of colour at mouse coordinates
 				Cells[menu.i][menu.j].num = counter; // sets new num in cell to number clicked
