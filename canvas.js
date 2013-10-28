@@ -27,6 +27,17 @@ var sample_puzzle = [' ',' ',' ',1,' ',5,' ',' ',' ',1,4,' ',' ',' ',' ',6,7,' '
 var solution_puzzle = [6,7,2,1,4,5,3,9,8,1,4,5,9,8,3,6,7,2,3,8,9,7,6,2,4,5,1,2,6,3,5,7,4,8
 						,1,9,9,5,8,6,2,1,7,4,3,7,1,4,3,9,8,5,2,6,5,9,7,2,3,6,1,8,4,4,2,6,8,1
 						,7,9,3,5,8,3,1,4,5,9,2,6,7];					 //An array of entries for the sample puzzle
+
+function restart(){ // puts original values in cells
+	for(var i = 0; i < 9; i++){
+		for(var j = 0; j < 9; j++){
+			Cells[i][j].num = sample_puzzle[(j*9)+i];
+		}
+	}
+	invalidate();
+	dispMenuHandler = false;
+	mySel = 0;
+}
 function checkdata(){ // checks to make sure the given and solution are of equal length
 	given = "given:"+sample_puzzle.length;
 	sol = "sol:"+solution_puzzle.length;
@@ -76,7 +87,7 @@ function checker(){ // checks puzzle for correctness
 	}catch(err){console.log(err);}
 	alert("solution is correct!"); // no errors, soultion is correct
 }
-function init(cSize){
+function init(cSize){ // main
 	checkdata();
 	canvas_size = cSize;
 	canvas = document.getElementById("myCanvas"); // grabs canvas from html 
@@ -125,6 +136,9 @@ function invalidate(){ // canvas is no longer uptodate, needs to be redrawn
 	canvasValid = false;
 }
 function drawGrids(){ // draws the background grids for the board
+	perm_ctx.fillStyle = 'white'; // background color
+	perm_ctx.fillRect(0,0,canvas_size,canvas_size); // fills background
+	perm_ctx.stroke();
 	perm_ctx.strokeStyle = 'black'; // color of grids
 	for(var i = 1; i < 9; i++){
 		perm_ctx.beginPath(); //new set of lines to be drawn
