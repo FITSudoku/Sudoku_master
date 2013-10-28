@@ -165,6 +165,7 @@ function Cell(){ // create type Cell
 	this.fill = '#444444'; // dont really have a use for this..
 	this.num = ' '; // what goes into the cell
 	this.numbers = []; // array of bool to show in menu, not used yet
+	this.given = false;
 }
 function Menu(i,j,x,y){ // menu type
 	this.i; // cell row
@@ -212,6 +213,8 @@ function addCell(index,x,y,fill,num){ // adds cell to Cell array
 	cell.size = canvas_size/9;
 	cell.fill = fill;
 	cell.num = num;
+	if(num != ' ')
+		cell.given = true;
 	for(var i = 0; i < 9; i++){
 		cell.numbers.push(true); //	fills menu boolean for menu numbers to display
 	}
@@ -277,6 +280,12 @@ function cellClick(){ // checks if a cell was clicked
 			clear(fk_ctx);
 			if (imageData.data[3] > 0) {//3 is alpha value of colour at mouse coordinates
 			// if there is color then cell was clicked
+				if(Cells[i][j].given){ // if cell clicked is a starting cell. dont allow change
+					alert("Sorry, This value cannot be changed");
+					dispMenuHandler = false;
+					mySel = 0;
+					return;
+				}
 				try{
 				popUpMenu(mx,my,i,j); // sends info to menu for it to be displayed
 				}catch(err){console.log(err);};
@@ -290,7 +299,6 @@ function cellClick(){ // checks if a cell was clicked
 			}
 		}																			
 	}
-
 }
 function popUpMenu(x,y,i,j){ // sets new menu info 
 	dispMenuHandler = true; // tells draw to disp menu
@@ -325,6 +333,9 @@ function fillCell(i,j,stuff){// fills cell with passed info
 }
 function drawfilledCell(i,j){ // display number in cell
 	ctx.font="50px Georgia";
+	ctx.fillStyle = 'black'; // set font color
+	if(Cells[i][j].given) // if it is a given number change font color to red
+		ctx.fillStyle = 'red';
 	try{
 	ctx.fillText(Cells[i][j].num,Cells[i][j].x+15,(Cells[i][j].y-15)+canvas_size/9);
 	}catch(err){console.log(err);}
