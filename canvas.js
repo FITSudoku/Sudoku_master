@@ -34,7 +34,7 @@ function init(cSize){
 	drawGrids(); // draws the game board once to the perm_canvas
 	try{
 	createCells(); // fills cells with starting data of position, fill number, size
-	}catch(err){alert(err);}
+	}catch(err){console.log(err);}
 	intervalHandler = setInterval(draw, refresh); // sets an interval to run draw automatically
 	
 	if (document.defaultView && document.defaultView.getComputedStyle) { // gets info about html code and how much to offset
@@ -52,7 +52,7 @@ function draw(){ // all calls to draw on main canvas
 		ctx.clearRect(0,0,canvas_size, canvas_size); // clears the canvas from previous draw
 		try{
 		drawStuffInCells(); // draws the numbers in each cell
-		}catch(err){alert(err);}
+		}catch(err){console.log(err);}
 		if(dispMenuHandler){ // asks if need to display menu
 			drawMenu();
 		}
@@ -116,13 +116,21 @@ function drawMenu(){ // draws menu on menu canvas
 	invalidate();
 	
 }
-function drawCell(contex,i,j,color){ // used to draw on fake canvas for click detection on cells 
+function drawCell(contex,i,j,color,size){ // used to draw on fake canvas for click detection on cells 
 	try{
 	contex.lineWidth = 2;
 	contex.fillStyle = color;
-	contex.fillRect(Cells[i][j].x,Cells[i][j].y,(canvas_size/9),(canvas_size/9)); // draws cell on passed canvas
+	contex.fillRect(Cells[i][j].x,Cells[i][j].y,size,size); // draws cell on passed canvas
 	invalidate();
-	}catch(err){alert(err);}
+	}catch(err){console.log(err);}
+}
+function drawMenuCell(contex,x,y,color,size){ // used to draw on fake canvas for click detection on cells 
+	try{
+	contex.lineWidth = 2;
+	contex.fillStyle = color;
+	contex.fillRect(x,y,size,size); // draws cell on passed canvas
+	invalidate();
+	}catch(err){console.log(err);}
 }
 function addCell(index,x,y,fill,num){ // adds cell to Cell array
 	try{
@@ -137,7 +145,7 @@ function addCell(index,x,y,fill,num){ // adds cell to Cell array
 		cell.numbers.push(true); //	fills menu boolean for menu numbers to display
 	}
 	Cells[index].push(cell); // pushes cells to 2d array
-	}catch(err){alert(err);}
+	}catch(err){console.log(err);}
 }
 function createCells(){ // creates cell 2d array
 	var color = "#000080"; // not used
@@ -150,7 +158,7 @@ function createCells(){ // creates cell 2d array
                 addCell(i,(i*(canvas_size/9)),(j*(canvas_size/9)),color, num); // passes cell info to be created and pushed to array
 			}
 		}
-	}catch(err){alert(err);}
+	}catch(err){console.log(err);}
 }
 function clear(context){ // removes all objects on passed canvas
 	context.clearRect(0,0,canvas_size, canvas_size);
@@ -165,27 +173,35 @@ function mDown(e){ // what happens when mouse left button is depressed
 	invalidate();
 }
 function menuClick(){ // checks for menu click
-	for (var i = 0; i < 3; i++) {
-		for (var j = 0; j < 3; j++) {
+	if(mySel == 0){ //if there is no sel, dont run check
+		return false; //false so cell click can check instead
+	}
+	var counter = 0;
+	for (var j = 0; j < 3; j++) {
+		for (var i = 0; i < 3; i++) {
+			counter++;
 			var imageData;
+			drawMenuCell(menu_ctx,Cells[menu.i][menu.j].x+((canvas_size/27)*i),Cells[menu.i][menu.j].y+((canvas_size/27)*j),'blue',canvas_size/27);
 			imageData = menu_ctx.getImageData(mx, my, 1, 1);
 			//menu.stroke();
-			//clear(fk_ctx);
+			clear(menu_ctx);
 			if (imageData.data[3] > 0) {//3 is alpha value of colour at mouse coordinates
-				mySel = Cells[i][j];
+				Cells[menu.i][menu.j].num = counter; // sets new num in cell to number clicked
+				var str = "clicked:"+counter // debug stuff
+				console.log(str); // tell console what number was clicked, dugbug stuff
 				invalidate();
+				dispMenuHandler = false; // no longer disp menu
 				return true;
 			}
 		}																			
 	}
-	mySel = 0;
 	
 }
 function cellClick(){ // checks if a cell was clicked
 	for (var i = 0; i < Cells.length; i++) { // cycle through cell 2d array 
 		for (var j = 0; j < Cells[i].length; j++) {
 			var imageData; // RBG data for canvas
-			drawCell(fk_ctx,i,j,'blue'); // draws cell on non-displayed canvas
+			drawCell(fk_ctx,i,j,'blue',(canvas_size/9)); // draws cell on non-displayed canvas
 			imageData = fk_ctx.getImageData(mx, my, 1, 1); // gets RBG data for mouse cords
 			clear(fk_ctx);
 			if (imageData.data[3] > 0) {//3 is alpha value of colour at mouse coordinates
@@ -204,8 +220,7 @@ function cellClick(){ // checks if a cell was clicked
 			}
 		}																			
 	}
-	
-	mySel = 0;
+
 }
 function popUpMenu(x,y,i,j){ // sets new menu info 
 	dispMenuHandler = true; // tells draw to disp menu
@@ -236,13 +251,13 @@ function fillCell(i,j,stuff){// fills cell with passed info
 	try{
 	//add assert that num is a string number 1 - 9
 	Cells[i][j].num = String(stuff);
-	}catch(err){alert(err);}
+	}catch(err){console.log(err);}
 }
 function drawfilledCell(i,j){ // display number in cell
 	ctx.font="50px Georgia";
 	try{
 	ctx.fillText(Cells[i][j].num,Cells[i][j].x+15,(Cells[i][j].y-15)+canvas_size/9);
-	}catch(err){alert(err);}
+	}catch(err){console.log(err);}
 }
 function drawStuffInCells(){ // dispaly all numbers in cells
 	ctx.fillStyle = 'black';
@@ -250,7 +265,7 @@ function drawStuffInCells(){ // dispaly all numbers in cells
 		for(var j = 0; j < Cells[i].length; j++){
 			try{
 			drawfilledCell(i,j); // display number in passed cell 
-			}catch(err){alert(err);}
+			}catch(err){console.log(err);}
 		}
 	}
 	ctx.stroke();
