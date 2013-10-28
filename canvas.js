@@ -51,13 +51,31 @@ function solver(){
 			change = "change:"+Cells[j][i].num;
 			Cells[j][i].num = solution_puzzle[count];
 			change += ":"+Cells[j][i].num;
-			console.log(change);
+			//console.log(change);
 			count++;
 		}
 	}
 	invalidate();
 	}catch(err){console.log(err);}
 
+}
+function checker(){
+	var count = 0;
+	try{
+	for(var i = 0; i < Cells.length; i++){
+		for(var j = 0; j < Cells[i].length; j++){
+			if(!(Cells[j][i].num == solution_puzzle[count])){
+				mySel = Cells[j][i];
+				alert("Sorry, that solution is not correct\nProblem in Highlighted cell");
+				dispMenuHandler = false;
+				invalidate();
+				return;
+			}
+			count++;
+		}
+	}
+	}catch(err){console.log(err);}
+	alert("solution is correct!");
 }
 function init(cSize){
 	checkdata();
@@ -237,6 +255,7 @@ function menuClick(){ // checks for menu click
 	
 }
 function cellClick(){ // checks if a cell was clicked
+	mySel = 0;
 	for (var i = 0; i < Cells.length; i++) { // cycle through cell 2d array 
 		for (var j = 0; j < Cells[i].length; j++) {
 			var imageData; // RBG data for canvas
@@ -248,7 +267,6 @@ function cellClick(){ // checks if a cell was clicked
 				try{
 				popUpMenu(mx,my,i,j); // sends info to menu for it to be displayed
 				}catch(err){console.log(err);};
-				fillCell(i,j,"5"); // when clicked fill this. this is just for testing, need to update menu click to fill correctly
 				mySel = Cells[i][j]; // sets the clicked cell to mySel to be used for displaing info // might use this instead of menu object
 				offsetx = mx - mySel.x; // mouse cords correction
 				offsety = my - mySel.y;
