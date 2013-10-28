@@ -19,6 +19,8 @@ var mx, my; //mouse coords
 var offsetx, offsety; // used to set correct coords for canvas taking into account where the canvas is drawn on the screen
 var stylePaddingLeft, stylePaddingTop, styleBorderLeft, styleBorderTop; // more offset variables 
 var menu = new Menu(); // menu object that holds data about position
+var sample_puzzle = [4,5,7,3,8,1,2,6,9,1,6,2,5,4,9,8,7,3,9,3,8,2,7,6,4,5,1,3,7,4,8,6,2,1,9,5,8,2,5,9,1,7,3,4,6,6,1,9,4,3,5
+                     ,7,2,8,2,4,1,6,5,8,9,3,7,5,8,3,7,9,4,6,1,2,7,9,6,1,2,3,5,8,4]; //An array of entries for the sample puzzle
 function init(cSize){
 	canvas_size = cSize;
 	canvas = document.getElementById("myCanvas"); // grabs canvas from html 
@@ -146,7 +148,8 @@ function createCells(){ // creates cell 2d array
 		for(var i = 0; i < 9; i++){
 			Cells.push([]); // creates next cell array row
 			for(var j = 0; j < 9; j++){
-				addCell(i,(i*(canvas_size/9)),(j*(canvas_size/9)),color, num); // passes cell info to be created and pushed to array
+				num = sample_puzzle[(j*9)+i];
+                addCell(i,(i*(canvas_size/9)),(j*(canvas_size/9)),color, num); // passes cell info to be created and pushed to array
 			}
 		}
 	}catch(err){alert(err);}
