@@ -19,9 +19,48 @@ var mx, my; //mouse coords
 var offsetx, offsety; // used to set correct coords for canvas taking into account where the canvas is drawn on the screen
 var stylePaddingLeft, stylePaddingTop, styleBorderLeft, styleBorderTop; // more offset variables 
 var menu = new Menu(); // menu object that holds data about position
-var sample_puzzle = [4,5,7,3,8,1,2,6,9,1,6,2,5,4,9,8,7,3,9,3,8,2,7,6,4,5,1,3,7,4,8,6,2,1,9,5,8,2,5,9,1,7,3,4,6,6,1,9,4,3,5
-                     ,7,2,8,2,4,1,6,5,8,9,3,7,5,8,3,7,9,4,6,1,2,7,9,6,1,2,3,5,8,4]; //An array of entries for the sample puzzle
+var sample_puzzle = [' ',' ',' ',1,' ',5,' ',' ',' ',1,4,' ',' ',' ',' ',6,7,' ',' ',8
+					,' ',' ',' ',2,4,' ',' ',' ',6,3,' ',7,' ',' ',1,' ',9,' ',' ',' '
+					,' ',' ',' ',' ',3,' ',1,' ',' ',9,' ',5,2,' ',' ',' ',7,2,' ',' ',' '
+					,8,' ',' ',2,6,' ',' ',' ',' ',3,5,' ',' ',' ',4,' ',9,' ',' ',' ']
+					 
+var solution_puzzle = [6,7,2,1,4,5,3,9,8,1,4,5,9,8,3,6,7,2,3,8,9,7,6,2,4,5,1,2,6,3,5,7,4,8
+						,1,9,9,5,8,6,2,1,7,4,3,7,1,4,3,9,8,5,2,6,5,9,7,2,3,6,1,8,4,4,2,6,8,1
+						,7,9,3,5,8,3,1,4,5,9,2,6,7];					 //An array of entries for the sample puzzle
+function checkdata(){
+	given = "given:"+sample_puzzle.length;
+	sol = "sol:"+solution_puzzle.length;
+	console.log(given);
+	console.log(sol);
+	var solved = "S:";
+	var givens = "G:";
+	for(var i = 0; i < solution_puzzle.length; i++){
+		solved += solution_puzzle[i];
+		givens += sample_puzzle[i];				
+	}
+	console.log(givens);
+	console.log(solved);
+}
+function solver(){
+	var count = 0;
+	var change = ' ';
+	try{
+	for(var i = 0; i < Cells.length; i++){
+		for(var j = 0; j < Cells[i].length; j++){
+		
+			change = "change:"+Cells[j][i].num;
+			Cells[j][i].num = solution_puzzle[count];
+			change += ":"+Cells[j][i].num;
+			console.log(change);
+			count++;
+		}
+	}
+	invalidate();
+	}catch(err){console.log(err);}
+
+}
 function init(cSize){
+	checkdata();
 	canvas_size = cSize;
 	canvas = document.getElementById("myCanvas"); // grabs canvas from html 
 	ctx = canvas.getContext("2d"); // ties the canvas to a context used to draw to the canvas
