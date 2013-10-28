@@ -116,14 +116,12 @@ function drawMenu(){ // draws menu on menu canvas
 	invalidate();
 	
 }
-function drawCell(contex,i,j,color){ // used to draw on fake canvas for click detection on cells 
+function drawCell(contex,i,j,color,size){ // used to draw on fake canvas for click detection on cells 
 	try{
 	contex.lineWidth = 2;
 	contex.fillStyle = color;
-	contex.fillRect(Cells[i][j].x,Cells[i][j].y,(canvas_size/9),(canvas_size/9)); // draws cell on passed canvas
+	contex.fillRect(Cells[i][j].x,Cells[i][j].y,size,size); // draws cell on passed canvas
 	invalidate();
-	//contex.stroke();
-	//alert("Drawing Cell");
 	}catch(err){alert(err);}
 }
 function addCell(index,x,y,fill,num){ // adds cell to Cell array
@@ -160,38 +158,34 @@ function clear(context){ // removes all objects on passed canvas
 function mDown(e){ // what happens when mouse left button is depressed
 	getMouse(e); // gets corrected mouse coords with offsets
 	clear(ctx); // clears main canvas
-	menuClick(); // checks to see if menu is clicked
-	cellClick(); // checks to see if cell is clicked
+	if(!menuClick()){ // checks to see if menu is clicked
+	cellClick();
+	}// checks to see if cell is clicked
 	clear(ctx); // clears canvas again.....might not need this
 	invalidate();
 }
 function menuClick(){ // checks for menu click
-	/*     copyed from cell click, needs to be rewritten for menus
-	for (var i = 0; i < Cells.length; i++) {
-		for (var j = 0; j < Cells[i].length; j++) {
+	for (var i = 0; i < 3; i++) {
+		for (var j = 0; j < 3; j++) {
 			var imageData;
-			drawCell(fk_ctx,i,j,'blue');
+			drawCell(fk_ctx,i,j,'blue',9);
 			imageData = fk_ctx.getImageData(mx, my, 1, 1);
 			clear(fk_ctx);
 			if (imageData.data[3] > 0) {//3 is alpha value of colour at mouse coordinates
 				mySel = Cells[i][j];
-				offsetx = mx - mySel.x;
-				offsety = my - mySel.y;
-				mySel.x = mx - offsetx; 
-				mySel.y = my - offsety;
 				invalidate();
-				return;
+				return true;
 			}
 		}																			
 	}
 	mySel = 0;
-	*/
+	
 }
 function cellClick(){ // checks if a cell was clicked
 	for (var i = 0; i < Cells.length; i++) { // cycle through cell 2d array 
 		for (var j = 0; j < Cells[i].length; j++) {
 			var imageData; // RBG data for canvas
-			drawCell(fk_ctx,i,j,'blue'); // draws cell on non-displayed canvas
+			drawCell(fk_ctx,i,j,'blue',(canvas_size/9)); // draws cell on non-displayed canvas
 			imageData = fk_ctx.getImageData(mx, my, 1, 1); // gets RBG data for mouse cords
 			clear(fk_ctx);
 			if (imageData.data[3] > 0) {//3 is alpha value of colour at mouse coordinates
