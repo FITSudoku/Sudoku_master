@@ -116,11 +116,11 @@ function drawMenu(){ // draws menu on menu canvas
 	invalidate();
 	
 }
-function drawCell(contex,i,j,color,size){ // used to draw on fake canvas for click detection on cells 
+function drawCell(contex,i,j,color){ // used to draw on fake canvas for click detection on cells 
 	try{
 	contex.lineWidth = 2;
 	contex.fillStyle = color;
-	contex.fillRect(Cells[i][j].x,Cells[i][j].y,size,size); // draws cell on passed canvas
+	contex.fillRect(Cells[i][j].x,Cells[i][j].y,(canvas_size/9),(canvas_size/9)); // draws cell on passed canvas
 	invalidate();
 	}catch(err){alert(err);}
 }
@@ -168,9 +168,9 @@ function menuClick(){ // checks for menu click
 	for (var i = 0; i < 3; i++) {
 		for (var j = 0; j < 3; j++) {
 			var imageData;
-			drawCell(fk_ctx,i,j,'blue',9);
-			imageData = fk_ctx.getImageData(mx, my, 1, 1);
-			clear(fk_ctx);
+			imageData = menu_ctx.getImageData(mx, my, 1, 1);
+			//menu.stroke();
+			//clear(fk_ctx);
 			if (imageData.data[3] > 0) {//3 is alpha value of colour at mouse coordinates
 				mySel = Cells[i][j];
 				invalidate();
@@ -185,7 +185,7 @@ function cellClick(){ // checks if a cell was clicked
 	for (var i = 0; i < Cells.length; i++) { // cycle through cell 2d array 
 		for (var j = 0; j < Cells[i].length; j++) {
 			var imageData; // RBG data for canvas
-			drawCell(fk_ctx,i,j,'blue',(canvas_size/9)); // draws cell on non-displayed canvas
+			drawCell(fk_ctx,i,j,'blue'); // draws cell on non-displayed canvas
 			imageData = fk_ctx.getImageData(mx, my, 1, 1); // gets RBG data for mouse cords
 			clear(fk_ctx);
 			if (imageData.data[3] > 0) {//3 is alpha value of colour at mouse coordinates
