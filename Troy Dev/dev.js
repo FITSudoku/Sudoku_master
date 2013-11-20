@@ -18,22 +18,29 @@ function gData(cName,_givens,_solutions){// new type that holds all data about t
 		canvas: "#"+cName, // canvas to add from html
 		fps: 60
 	});
+		var cell = this.canvas.display.rectangle({
+		x: 0, //center of cell
+		y: 0, //messy to make text alignment easier
+		origin: { x: "left", y: "top" },
+		width: this.canvas.height/9,
+		height: this.canvas.height,
+		fill: "green" 
+		//stroke: "10px black"
+	});
+	this.canvas.addChild(cell);
 	setup_Cells(this.canvas,this.givens,this.given,this.menu); // creates cell objects and fills them with givens
 	Draw_Grids(this.canvas); // draws big grid lines
+//----------------------------------------------------------------------------
+
 }
 function Menu(){
-	this.check = false;
-	this.obj;
-	this.active_Cell;
+	this.check = false; // checker if menu is active
+	this.obj; // the object being disp
+	this.active_Cell; // cellText menu is acting on
 }
 // functions----------------------------
 function start(){
-var game = new gData("myCanvas",given_Puzzle,solution_Puzzle); // sets up game
-
-test(game);
-}
-function test(canvas, cell){ // test function for random tests
-
+var game = new gData("myCanvas",given_Puzzle,solution_Puzzle); // sets up game	
 }
 //-----------------Starting functions-----------------------------------------
 function Draw_Grids(canvas){ // draws the background grids for the board
@@ -43,20 +50,20 @@ function Draw_Grids(canvas){ // draws the background grids for the board
 	}
 }
 function Draw_Line(canvas, xstart,ystart,xend, yend){ // draws single line of background grid
-	var line = canvas.display.line({ // ocanvas line call
+	var line = canvas.display.line({ // creates line object
 		start: { x: xstart, y: ystart },
 		end: { x: xend, y: yend },
-		stroke: '5px black',
+		stroke: '5px black', // big line properties
 	});
 	canvas.addChild(line); // add object to array of objects for ocanvas to auto draw
 }
 function setup_Cells(canvas,givens,given,menu){ // creates and draws cells
 	for(var i = 0; i < givens.length; i++){
 		for(var j = 0; j < givens.length; j++){
-			var color = 'black'; // not given
+			var color = 'black'; // not given, future proofing for adding color
 			if (given[i][j]) //if cell being added is a given
-				color = 'red'; // given
-            add_Cell(canvas,givens,given,i,j,color,menu);
+				color = 'red'; // given color
+            add_Cell(canvas,givens,given,i,j,color,menu);//creates cell and menu elements and fills them with data 
 		}
 	}
 }
@@ -67,7 +74,7 @@ function add_Cell(canvas,givens,given,index,jndex,color,menu){ // add cell objec
 		origin: { x: "center", y: "center" },
 		width: canvas.width/givens.length,
 		height:canvas.width/givens.length,
-		fill: "white", 
+		//fill: "yellow", 
 		stroke: "1px black"
 	});
 	var cellText = canvas.display.text({ // what goes into the cell
@@ -84,26 +91,28 @@ function add_Cell(canvas,givens,given,index,jndex,color,menu){ // add cell objec
 	cell.bind("click tap", function () { // on click action
 		if(!given[index][jndex]){
 			menu.active_Cell = cellText
-			disp_Menu(canvas,menu,cellText,index,jndex);
+			disp_Menu(canvas,menu,index,jndex);
 			}
 		else
 			alert("This is an unchangeable cell");
 	});
 }
-function disp_Menu(canvas,menu,cell,i,j){ // change to small cells only
-	if(menu.check)
-		menu.obj.moveTo(cell.abs_x,cell.abs_y); //moves menu to new active cell
+function disp_Menu(canvas,menu,i,j){ // change to small cells only
+	if(menu.check) // if menu exists, move instead of create new one
+		menu.obj.moveTo(menu.active_Cell.parent.abs_x,
+						menu.active_Cell.parent.abs_y); //moves menu to new active cell
 	else{
 		menu.obj = canvas.display.rectangle({ // dummy object to hold 9 small objects to create menu
-			x: cell.abs_x,
-			y: cell.abs_y,
+			x: menu.active_Cell.parent.abs_x,
+			y: menu.active_Cell.parent.abs_y,
 		});
-		menu_Text(canvas,menu,i,j,cell); //creats and disp menu
+		menu_Text(canvas,menu,i,j); //creates and disp menu
 		canvas.addChild(menu.obj);
 		menu.check = true;
 	}
+	canvas.redraw(); // placed here to update after move, else menu lags
 }
-function menu_Text(canvas,menu,index,jndex,cell){
+function menu_Text(canvas,menu,index,jndex){ // disp menu numbers
 	for(var i = 0; i < 3; i++){
 		for(var j = 0; j < 3; j++){
 			var menu_Cell = canvas.display.rectangle({
@@ -117,8 +126,6 @@ function menu_Text(canvas,menu,index,jndex,cell){
 				text: (j*3)+i+1
 			});
 			var menu_Cell_Text = canvas.display.text({ // what goes into the cell
-				x: 0, 
-				y: 0,
 				origin: { x: "center", y: "center" },
 				font: "bold 15px sans-serif",
 				text: (j*3)+i+1, // this took me way longer to figure out then it should
@@ -126,19 +133,13 @@ function menu_Text(canvas,menu,index,jndex,cell){
 			});
 			menu_Cell.addChild(menu_Cell_Text);
 			menu.obj.addChild(menu_Cell);
-			menu_Cell.bind("click tap", function(){
-				menu.active_Cell.text = this.text;
-				menu.obj.remove();
+			menu_Cell.bind("click tap", function(){ // click bind for small menu
+				menu.active_Cell.text = this.text; //sets new value for cell
+				menu.obj.remove(); // removes menu from disp
 				menu.check = false;
 			});
 		}
 	}
-}
-function animate(h,w,obj){
-	obj.stop().animate({
-		height: h,
-		width: w
-	});
 }
 function create_Bool_Array(inArray){ // creates a 2d bool array of givens
 	var boolArray = [];
