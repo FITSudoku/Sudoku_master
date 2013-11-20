@@ -27,7 +27,7 @@ var sample_puzzle = [' ',' ',' ',1,' ',5,' ',' ',' ',1,4,' ',' ',' ',' ',6,7,' '
 					 
 var solution_puzzle = [6,7,2,1,4,5,3,9,8,1,4,5,9,8,3,6,7,2,3,8,9,7,6,2,4,5,1,2,6,3,5,7,4,8
 						,1,9,9,5,8,6,2,1,7,4,3,7,1,4,3,9,8,5,2,6,5,9,7,2,3,6,1,8,4,4,2,6,8,1
-						,7,9,3,5,8,3,1,4,5,9,2,6,7];					 //An array of entries for the sample puzzle
+						,7,9,3,5,8,3,1,4,5,9,2,6,7];//An array of entries for the sample puzzle
 
 function restart(){ // puts original values in cells
 	for(var i = 0; i < 9; i++){
