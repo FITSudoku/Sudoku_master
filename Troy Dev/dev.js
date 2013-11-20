@@ -24,6 +24,7 @@ function gData(cName,_givens,_solutions){// new type that holds all data about t
 function Menu(){
 	this.check = false;
 	this.obj;
+	this.active_Cell;
 }
 // functions----------------------------
 function start(){
@@ -77,50 +78,67 @@ function add_Cell(canvas,givens,given,index,jndex,color,menu){ // add cell objec
 		text: givens[index][jndex], // if this does not work. change the wya it is passed
 		fill: color
 	});
+	
 	cell.addChild(cellText); // binds the cell and the text toeachother
 	canvas.addChild(cell); // adds cell/text to canvas object
-
 	cell.bind("click tap", function () { // on click action
-		if(!given[index][jndex])
-			disp_Menu(canvas,menu,cell);
+		if(!given[index][jndex]){
+			menu.active_Cell = cellText
+			disp_Menu(canvas,menu,cellText,index,jndex);
+			}
 		else
 			alert("This is an unchangeable cell");
 	});
 }
-function disp_Menu(canvas,menu,cell){
+function disp_Menu(canvas,menu,cell,i,j){ // change to small cells only
 	if(menu.check)
-		menu.obj.stop().animate({
-			height: 0,
-			width: 0,
-			rotation: -360
+		menu.obj.moveTo(cell.abs_x,cell.abs_y); //moves menu to new active cell
+	else{
+		menu.obj = canvas.display.rectangle({ // dummy object to hold 9 small objects to create menu
+			x: cell.abs_x,
+			y: cell.abs_y,
 		});
-	var menu_Obj = canvas.display.rectangle({
-		x: cell.abs_x,
-		y: cell.abs_y,
-		origin: { x: "center", y: "center" },
-		width: 0,
-		height: 0,
-		fill: "blue",
-		stroke: "1px black",
+		menu_Text(canvas,menu,i,j,cell); //creats and disp menu
+		canvas.addChild(menu.obj);
+		menu.check = true;
+	}
+}
+function menu_Text(canvas,menu,index,jndex,cell){
+	for(var i = 0; i < 3; i++){
+		for(var j = 0; j < 3; j++){
+			var menu_Cell = canvas.display.rectangle({
+				x: ((canvas.width/27)*i)-(canvas.width/27), //center of cell
+				y: ((canvas.width/27)*j)-(canvas.width/27),
+				origin: { x: "center", y: "center" },
+				width: (canvas.width/27),
+				height:(canvas.width/27),
+				fill: "blue", 
+				stroke: "1px black",
+				text: (j*3)+i+1
+			});
+			var menu_Cell_Text = canvas.display.text({ // what goes into the cell
+				x: 0, 
+				y: 0,
+				origin: { x: "center", y: "center" },
+				font: "bold 15px sans-serif",
+				text: (j*3)+i+1, // this took me way longer to figure out then it should
+				fill: "white"
+			});
+			menu_Cell.addChild(menu_Cell_Text);
+			menu.obj.addChild(menu_Cell);
+			menu_Cell.bind("click tap", function(){
+				menu.active_Cell.text = this.text;
+				menu.obj.remove();
+				menu.check = false;
+			});
+		}
+	}
+}
+function animate(h,w,obj){
+	obj.stop().animate({
+		height: h,
+		width: w
 	});
-	canvas.addChild(menu_Obj);
-	menu.obj = menu_Obj;
-	menu_Obj.stop().animate({
-		height: cell.width,
-		width: cell.width,
-		rotation: 360
-		});
-	menu_Obj.bind("click tap", function(){
-		this.stop().animate({
-		height: 0,
-		width: 0,
-		rotation: 360
-		});
-		//canvas.removeChild(menu_Obj);
-		menu.check = false;
-	});
-	canvas.redraw();
-	menu.check = true;
 }
 function create_Bool_Array(inArray){ // creates a 2d bool array of givens
 	var boolArray = [];
