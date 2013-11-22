@@ -7,9 +7,9 @@ var given_Puzzle = [' ', ' ', ' ', 1, ' ', 5, ' ', ' ', ' ', 1, 4, ' ', ' ', ' '
 var solution_Puzzle = [6, 7, 2, 1, 4, 5, 3, 9, 8, 1, 4, 5, 9, 8, 3, 6, 7, 2, 3, 8, 9, 7, 6, 2, 4, 5, 1, 2, 6, 3, 5, 7, 4, 8,
 						1, 9, 9, 5, 8, 6, 2, 1, 7, 4, 3, 7, 1, 4, 3, 9, 8, 5, 2, 6, 5, 9, 7, 2, 3, 6, 1, 8, 4, 4, 2, 6, 8, 1,
 						7, 9, 3, 5, 8, 3, 1, 4, 5, 9, 2, 6, 7]; //An array of entries for the sample puzzle
-var game = null;  // becuase button on html cant access non globals
+var game = null; // becuase button on html cant access non globals
 
-//types and initialization
+//-------------------------Types and initialization
 function gData(cName, _givens, _solutions) { // new type that holds all data about the game
 	this.inGiven = _givens;
 	this.inSol = _solutions;
@@ -35,11 +35,11 @@ function Menu(canvas, user_Board) {
 	this.xBox_Check = false; // checks if xbox in top right of cell is present
 	this.user = user_Board;
 }
-// functions----------------------------
+// ------------------------Functions----------------------------
 function start() {
 	game = new gData("myCanvas", given_Puzzle, solution_Puzzle); // sets up game	
 }
-
+//-------------------------Board functions--------------------
 function Draw_Grids(canvas) { // draws the background grids for the board
 	for (var i = 3; i < 7; i += 3) { // only line 3 and 6 are needed
 		Draw_Line(canvas, (canvas.width / 9) * i, 0, (canvas.width / 9) * i, canvas.width); // vertical lines
@@ -60,10 +60,10 @@ function Draw_Line(canvas, xstart, ystart, xend, yend) { // draws single line of
 		stroke: '5px black', // big line properties
 	});
 	canvas.addChild(line); // add object to array of objects for ocanvas to auto draw
-	line.zIndex = 'back'; // not sure if necessary, added for debuging
+	line.zIndex = 'front'; // not sure if necessary, added for debuging
 }
 
-function setup_Cells(canvas, given, menu,cell_Array) { // creates and draws cells
+function setup_Cells(canvas, given, menu, cell_Array) { // creates and draws cells
 	for (var i = 0; i < given.length; i++) {
 		cell_Array[i] = [];
 		for (var j = 0; j < given.length; j++) {
@@ -100,17 +100,28 @@ function add_Cell(canvas, menu, index, jndex, color) { // add cell object to can
 	});
 	cell.addChild(cellText); // binds the cell and the text toeachother
 	canvas.addChild(cell); // adds cell/text to canvas object
+	var num = null;
+	cell.bind("mousedown", function () {
+		num = menu.user[index][jndex];
+		menu.active_Cell = cellText;
+	});
 	cell.bind("dblclick", function () {
-		cellText.text = 'T';
+		clear_Cells(menu);
+		cellText.text = num;
+		menu.user[index][jndex] = num;
+		highlight(menu, num);
+		canvas.redraw();
 	});
 	if (color === 'black') { // black == user cell, red == given
-		cell.bind("click tap", function () { // on click action
+		cell.bind("click", function () { // on click action
+			num = menu.user[index][jndex];
+			clear_Cells(menu);
 			menu.active_Cell = cellText;
 			setup_Menu(canvas, menu, index, jndex);
 		});
 		cell.bind("mouseenter", function () {
 			menu.hover_Cell = cell;
-			hover(canvas, menu,index,jndex);
+			hover(canvas, menu, index, jndex);
 			canvas.redraw(); // prevent xbox lag
 		});
 	}
@@ -131,6 +142,7 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
 		canvas.addChild(menu.obj); // disp dummy+children 
 		menu.check = true;
 	}
+	menu.obj.zIndex('front');
 	canvas.redraw(); // placed here to update after move, else menu lags
 }
 
@@ -170,7 +182,7 @@ function add_Menu(canvas, menu, index, jndex, x, y, i, j) { // disp menu numbers
 
 }
 
-function hover(canvas, menu,index,jndex) {
+function hover(canvas, menu, index, jndex) {
 	if (menu.xBox_Check)
 		menu.mouse_Obj.moveTo(menu.hover_Cell.abs_x + (canvas.height / (menu.user.length * 2)),
 			menu.hover_Cell.abs_y - (canvas.height / (menu.user.length * 2)));
@@ -189,7 +201,7 @@ function hover(canvas, menu,index,jndex) {
 			pieSection: true,
 			fill: "yellow",
 			stroke: "0px black",
-			opacity: 0.5,
+			opacity: 0.8,
 			join: "cap"
 		});
 		var xbox_Text = canvas.display.text({ // what goes into the cell
@@ -214,6 +226,12 @@ function hover(canvas, menu,index,jndex) {
 	}
 }
 
+function clear_Cells(menu){ // clears cell colors
+	for(var i = 0; i < menu.user.length; i++)
+		for(var j = 0; j < menu.user.length; j++)
+			game.cell_Array[i][j].fill = '';
+}
+//------------------------Data manipulation fucntions------------------------
 function create_Bool_Array(inArray) { // creates a 2d bool array of givens
 	var boolArray = [];
 	for (var i = 0; i < inArray.length; i++) { // generates bool array if cell is a given
@@ -240,9 +258,8 @@ function to_2D(inArray) { // takes in 1d array and converts to 2d, must pass cor
 	}
 	return array;
 }
-
+//------------------------Button fucntions-----------------------------------
 function restart() { // puts original values in cells
-	console.log("in restart");
 	game.menu.user = to_2D(game.inGiven); //has to recreate array because of obj pointers mess shit up
 	for (var i = 0; i < game.menu.user.length; i++)
 		for (var j = 0; j < game.menu.user.length; j++)
@@ -251,8 +268,7 @@ function restart() { // puts original values in cells
 }
 
 function solver() { // solves the puzzle
-	console.log("in Solver");
-	game.menu.user = to_2D(game.inSol);
+	game.menu.user = to_2D(game.inSol); // Must recreate array because of object refrences
 	for (var i = 0; i < game.menu.user.length; i++)
 		for (var j = 0; j < game.menu.user.length; j++)
 			game.cell_Array[i][j].children[0].text = game.menu.user[i][j]; // assinment works, data replace is bad
@@ -260,19 +276,45 @@ function solver() { // solves the puzzle
 }
 
 function checker() { // checks puzzle for correctness
-	console.log("in checker");
-	var correct = true;
+	var correct = true; // bool for quick breaking and message display
 	for (var i = 0; i < game.menu.user.length; i++)
-		for (var j = 0; j < game.menu.user.length; j++){
-			if(game.solu[i][j] != game.menu.user[i][j] && checker){ // added checker for a little optomization 
+		for (var j = 0; j < game.menu.user.length; j++) {
+			if (game.solu[i][j] != game.menu.user[i][j] && checker) { // added checker for a little optomization 
 				alert("There appears to be a probelm with you solution!");
-				game.cell_Array[i][j].fill = 'red';
+				game.cell_Array[i][j].fill = 'red'; // Highlights incorrect cell
 				correct = false;
-				i = 99;
+				i = 99; // quick break
 				break;
 			}
 		}
-	if(correct)
+	if (correct)
 		alert("Congradulations, now give us your data!");
 	game.canvas.redraw();
+}
+//------------------------Help Functions--------------------------------------
+function highlight(menu,num){
+	menu.obj.remove();
+	console.log("hightlight:"+num);
+	for(var i = 0; i < menu.user.length; i++){
+		for(var j = 0; j < menu.user.length; j++){
+			if(menu.user[i][j] == num){
+				for(var x = 0; x < menu.user.length; x++){
+					game.cell_Array[x][j].fill = 'blue';
+					game.cell_Array[x][j].zIndex = 'back';
+					game.cell_Array[i][x].fill = 'blue';
+					game.cell_Array[i][x].zIndex = 'back';
+				}
+				var count = 0;
+				for(var y = 0; y < 3; y++)
+					for(var z = 0; z < 3; z++){
+						count++;
+						console.log("X:"+((Math.floor(i/3)*3)+y)+" y:"+((Math.floor(j/3)*3)+z)+" C:"+count);
+						game.cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].fill = 'blue';
+						game.cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].zIndex = 'back';
+						console.log("X:"+i+" y:"+j+" C:"+count);											 
+					}
+			}
+		}
+	}
+	menu.active_Cell.parent.fill = 'green';
 }
