@@ -1,5 +1,5 @@
 /*jshint indent: 4 */
-/*global oCanvas, console*/ //used to hide erros
+/*global oCanvas, console, alert*/ //used to hide erros
 var given_Puzzle = [' ', ' ', ' ', 1, ' ', 5, ' ', ' ', ' ', 1, 4, ' ', ' ', ' ', ' ', 6, 7, ' ', ' ', 8,
 					' ', ' ', ' ', 2, 4, ' ', ' ', ' ', 6, 3, ' ', 7, ' ', ' ', 1, ' ', 9, ' ', ' ', ' ',
 					' ', ' ', ' ', ' ', 3, ' ', 1, ' ', ' ', 9, ' ', 5, 2, ' ', ' ', ' ', 7, 2, ' ', ' ', ' ',
@@ -7,8 +7,12 @@ var given_Puzzle = [' ', ' ', ' ', 1, ' ', 5, ' ', ' ', ' ', 1, 4, ' ', ' ', ' '
 var solution_Puzzle = [6, 7, 2, 1, 4, 5, 3, 9, 8, 1, 4, 5, 9, 8, 3, 6, 7, 2, 3, 8, 9, 7, 6, 2, 4, 5, 1, 2, 6, 3, 5, 7, 4, 8,
 						1, 9, 9, 5, 8, 6, 2, 1, 7, 4, 3, 7, 1, 4, 3, 9, 8, 5, 2, 6, 5, 9, 7, 2, 3, 6, 1, 8, 4, 4, 2, 6, 8, 1,
 						7, 9, 3, 5, 8, 3, 1, 4, 5, 9, 2, 6, 7]; //An array of entries for the sample puzzle
+var game = null;  // becuase button on html cant access non globals
+
 //types and initialization
 function gData(cName, _givens, _solutions) { // new type that holds all data about the game
+	this.inGiven = _givens;
+	this.inSol = _solutions;
 	this.givens = to_2D(_givens); // converts given 1d array into 2d array of board givens 
 	this.solu = to_2D(_solutions); // 2d array of solution to game
 	this.given = create_Bool_Array(_givens); // bool 2d array for checking if cell is a given
@@ -16,9 +20,10 @@ function gData(cName, _givens, _solutions) { // new type that holds all data abo
 		canvas: "#" + cName, // canvas to add from html
 		fps: 60
 	});
+	this.cell_Array = [];
 	Draw_Grids(this.canvas); // draws big grid lines
-	this.menu = new Menu(this.canvas, this.givens);
-	setup_Cells(this.canvas, this.given, this.menu); // creates cell objects and fills them with givens
+	this.menu = new Menu(this.canvas, to_2D(_givens));
+	setup_Cells(this.canvas, this.given, this.menu, this.cell_Array); // creates cell objects and fills them with givens
 }
 
 function Menu(canvas, user_Board) {
@@ -32,9 +37,9 @@ function Menu(canvas, user_Board) {
 }
 // functions----------------------------
 function start() {
-	var game = new gData("myCanvas", given_Puzzle, solution_Puzzle); // sets up game	
+	game = new gData("myCanvas", given_Puzzle, solution_Puzzle); // sets up game	
 }
-//-----------------Starting functions-----------------------------------------
+
 function Draw_Grids(canvas) { // draws the background grids for the board
 	for (var i = 3; i < 7; i += 3) { // only line 3 and 6 are needed
 		Draw_Line(canvas, (canvas.width / 9) * i, 0, (canvas.width / 9) * i, canvas.width); // vertical lines
@@ -58,13 +63,14 @@ function Draw_Line(canvas, xstart, ystart, xend, yend) { // draws single line of
 	line.zIndex = 'back'; // not sure if necessary, added for debuging
 }
 
-function setup_Cells(canvas, given, menu) { // creates and draws cells
+function setup_Cells(canvas, given, menu,cell_Array) { // creates and draws cells
 	for (var i = 0; i < given.length; i++) {
+		cell_Array[i] = [];
 		for (var j = 0; j < given.length; j++) {
 			var color = 'black'; // not given, future proofing for adding color
 			if (given[i][j]) //if cell being added is a given
 				color = 'red'; // given color
-			add_Cell(canvas, menu, i, j, color); //creates cell and menu elements and fills them with data 
+			cell_Array[i][j] = add_Cell(canvas, menu, i, j, color); //creates cell and menu elements and fills them with data 
 		}
 	}
 }
@@ -94,27 +100,21 @@ function add_Cell(canvas, menu, index, jndex, color) { // add cell object to can
 	});
 	cell.addChild(cellText); // binds the cell and the text toeachother
 	canvas.addChild(cell); // adds cell/text to canvas object
+	cell.bind("dblclick", function () {
+		cellText.text = 'T';
+	});
 	if (color === 'black') { // black == user cell, red == given
 		cell.bind("click tap", function () { // on click action
 			menu.active_Cell = cellText;
 			setup_Menu(canvas, menu, index, jndex);
 		});
-		var test;
 		cell.bind("mouseenter", function () {
-			console.log("moving");
 			menu.hover_Cell = cell;
-			hover(canvas, menu, cell);
+			hover(canvas, menu,index,jndex);
 			canvas.redraw(); // prevent xbox lag
 		});
-		cell.bind("mousedown", function () {
-			// cellText.text = ' ';
-			//menu.user[index][jndex] = ' ';
-			//test.remove();
-		});
-		cell.bind("mouseleave", function () {
-			//test.remove();
-		});
 	}
+	return cell;
 }
 
 function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
@@ -127,14 +127,14 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
 		});
 		for (var i = 0; i < 3; i++)
 			for (var j = 0; j < 3; j++)
-				menu_Text(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j);
+				add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j);
 		canvas.addChild(menu.obj); // disp dummy+children 
 		menu.check = true;
 	}
 	canvas.redraw(); // placed here to update after move, else menu lags
 }
 
-function menu_Text(canvas, menu, index, jndex, x, y, i, j) { // disp menu numbers
+function add_Menu(canvas, menu, index, jndex, x, y, i, j) { // disp menu numbers
 	var menu_Cell = canvas.display.rectangle({
 		x: x, //center of cell
 		y: y,
@@ -157,6 +157,7 @@ function menu_Text(canvas, menu, index, jndex, x, y, i, j) { // disp menu number
 		text: (j * 3) + i + 1, // this took me way longer to figure out then it should
 		fill: "white"
 	});
+	menu.active_Cell.parent.fill = '';
 	menu_Cell.addChild(menu_Cell_Text);
 	menu.obj.addChild(menu_Cell);
 	menu_Cell.bind("click tap", function () { // click bind for small menu
@@ -169,14 +170,15 @@ function menu_Text(canvas, menu, index, jndex, x, y, i, j) { // disp menu number
 
 }
 
-function hover(canvas, menu, obj) {
+function hover(canvas, menu,index,jndex) {
 	if (menu.xBox_Check)
-		menu.mouse_Obj.moveTo(obj.abs_x + (canvas.height / (menu.user.length * 2)), obj.abs_y -(canvas.height / (menu.user.length * 2)));
+		menu.mouse_Obj.moveTo(menu.hover_Cell.abs_x + (canvas.height / (menu.user.length * 2)),
+			menu.hover_Cell.abs_y - (canvas.height / (menu.user.length * 2)));
 	else {
 		menu.xBox_Check = true;
 		var xBox = canvas.display.arc({
-			x: obj.abs_x + canvas.height / (menu.user.length * 2), //center of cell
-			y: obj.abs_y - canvas.height / (menu.user.length * 2), //messy to make text alignment easier
+			x: menu.hover_Cell.abs_x + canvas.height / (menu.user.length * 2), //center of cell
+			y: menu.hover_Cell.abs_y - canvas.height / (menu.user.length * 2), //messy to make text alignment easier
 			origin: {
 				x: "center",
 				y: "center"
@@ -186,7 +188,9 @@ function hover(canvas, menu, obj) {
 			radius: 20,
 			pieSection: true,
 			fill: "yellow",
-			stroke: "1px black",
+			stroke: "0px black",
+			opacity: 0.5,
+			join: "cap"
 		});
 		var xbox_Text = canvas.display.text({ // what goes into the cell
 			x: -2, // use parent as child
@@ -204,7 +208,7 @@ function hover(canvas, menu, obj) {
 		menu.mouse_Obj = xBox;
 		xBox.bind("click tap", function () {
 			menu.hover_Cell.children[0].text = ' ';
-			console.log("wo");
+			menu.user[index][jndex] = ' ';
 			canvas.redraw(); // prevents removal lag
 		});
 	}
@@ -235,4 +239,40 @@ function to_2D(inArray) { // takes in 1d array and converts to 2d, must pass cor
 		}
 	}
 	return array;
+}
+
+function restart() { // puts original values in cells
+	console.log("in restart");
+	game.menu.user = to_2D(game.inGiven); //has to recreate array because of obj pointers mess shit up
+	for (var i = 0; i < game.menu.user.length; i++)
+		for (var j = 0; j < game.menu.user.length; j++)
+			game.cell_Array[i][j].children[0].text = game.menu.user[i][j]; // assinment works, data replace is bad
+	game.canvas.redraw();
+}
+
+function solver() { // solves the puzzle
+	console.log("in Solver");
+	game.menu.user = to_2D(game.inSol);
+	for (var i = 0; i < game.menu.user.length; i++)
+		for (var j = 0; j < game.menu.user.length; j++)
+			game.cell_Array[i][j].children[0].text = game.menu.user[i][j]; // assinment works, data replace is bad
+	game.canvas.redraw();
+}
+
+function checker() { // checks puzzle for correctness
+	console.log("in checker");
+	var correct = true;
+	for (var i = 0; i < game.menu.user.length; i++)
+		for (var j = 0; j < game.menu.user.length; j++){
+			if(game.solu[i][j] != game.menu.user[i][j] && checker){ // added checker for a little optomization 
+				alert("There appears to be a probelm with you solution!");
+				game.cell_Array[i][j].fill = 'red';
+				correct = false;
+				i = 99;
+				break;
+			}
+		}
+	if(correct)
+		alert("Congradulations, now give us your data!");
+	game.canvas.redraw();
 }
