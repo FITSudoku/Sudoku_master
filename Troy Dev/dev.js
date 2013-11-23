@@ -296,7 +296,9 @@ function to_2D(inArray) { // takes in 1d array and converts to 2d, must pass cor
 //------------------------Button functions-----------------------------------
 
 function start() {
-    game = new gData("myCanvas", given_Puzzle, solution_Puzzle); // sets up game        
+    game = new gData("myCanvas", given_Puzzle, solution_Puzzle); // sets up game
+    stopCount();    
+    timedCount();
 }
 
 function restart() { // puts original values in cells
@@ -305,6 +307,8 @@ function restart() { // puts original values in cells
                 for (var j = 0; j < game.menu.user.length; j++)
                         game.cell_Array[i][j].children[0].text = game.menu.user[i][j]; // assignment works, data replace is bad
         game.canvas.redraw();
+        stopCount();       
+        timedCount();
 }
 
 function solver() { // solves the puzzle
@@ -313,6 +317,7 @@ function solver() { // solves the puzzle
                 for (var j = 0; j < game.menu.user.length; j++)
                         game.cell_Array[i][j].children[0].text = game.menu.user[i][j]; // assignment works, data replace is bad
         game.canvas.redraw();
+        stopCount();
 }
 
 function checker() { // checks puzzle for correctness
@@ -369,3 +374,4 @@ function highlight(menu,num){
         menu.active_Cell.parent.fill = 'green';
     }
 }
+
