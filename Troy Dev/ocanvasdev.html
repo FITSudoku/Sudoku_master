@@ -4,7 +4,8 @@
 <!script src="http://ocanvas.org/source/ocanvas-2.5.1.js"><!/script>
 <script src="ocanvas-2.5.1.js"></script>
 <script src="dev.js"></script>
-<title>Soduku Project</title>
+<script src="stopwatch.js"></script>
+<title>Sudoku Project</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
 <style type="text/css">
 .wrapper{
@@ -24,7 +25,7 @@ canvas{
       color: white;
       font-family: helvetica;
     }
-	button[type="start"]{
+	button[type="General"]{
 		background: blue;
 		color: white;
 		//font-weight: bold; 
@@ -40,17 +41,21 @@ canvas{
 <center>
 <body><div id="body"> 
 <h1>Dev Project</h1>
-<button type="start" onclick="start()">Start Game</button>
+<button type="General" onclick="start()">Start Game</button>
+<form>
+<input type="text" id="timeOutput">
+</form> 
+<br>
 
 <br>
-<button type="start" onclick="toggle_autoSweep()">Auto Sweep</button>
-<button type="start" onclick="">Highlight Regions</button>
-<button type="start" onclick="">Show Errors</button>
+<button type="General" onclick="toggle_autoSweep()">Auto Sweep</button>
+<button type="General" onclick="">Highlight Regions</button>
+<button type="General" onclick="">Show Errors</button>
 <div class="wrapper">
 <canvas id="myCanvas" width="500" height="500" style="border:3px solid #000000"></canvas>
 </div><br>
-<button type="start" onclick="solver()">Solve game</button>
-<button type="start" onclick="checker()">Check Game</button>
-<button type="start" onclick="restart()">Restart</button>
+<button type="General" onclick="solver()">Solve game</button>
+<button type="General" onclick="checker()">Check Game</button>
+<button type="General" onclick="restart()">Restart</button>
 </div></body></center>
 </html>
