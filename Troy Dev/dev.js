@@ -143,9 +143,9 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
             if (game.autoSweep) {        //why not put this check outside...so you dont have to run through a for loop for no reason	 
                 var num = (j * 3) + i + 1;                     
                 if (constraints[num]) //Only add number that are not constrained	 
-                    add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j);
-                else
-                    add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j);
+                    add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j); 
+            } else {
+                add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j);
             }
         }
     }
