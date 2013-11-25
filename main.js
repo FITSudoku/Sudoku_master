@@ -78,6 +78,7 @@ function setup_Cells(canvas, given, menu, cell_Array) { // creates and draws cel
             cell_Array[i][j] = add_Cell(canvas, menu, i, j,given); //creates cell and menu elements and fills them with data 
         }
     }
+    console.log(menu.user);
 }
 
 function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canvas
@@ -134,8 +135,11 @@ function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canv
     });
     cell.bind("dblclick", function () {
         clear_Cells(menu);
-        cellText.text = num;
         menu.user[index][jndex] = num;
+        if(boardType === 'color' && given[index][jndex])
+            num = '*';
+        cellText.text = num;
+        num = menu.user[index][jndex];
         if(num != ' ' && game.highlight)
             highlight(menu, num);
         canvas.redraw();
@@ -267,10 +271,13 @@ function clear_Cells(menu){ // clears cell colors
     for(var i = 0; i < menu.user.length; i++)
         for(var j = 0; j < menu.user.length; j++){
             console.log(menu.user[i][j]);
-            if(boardType === 'color')
+            if(boardType === 'color'){
+                console.log(menu.user[i][j]);
                 game.cell_Array[i][j].fill = colorMap[menu.user[i][j]];
+            }
             else
                 game.cell_Array[i][j].fill = '';
+            game.cell_Array[i][j].stroke = '1px black';
                 
         }
 }
@@ -428,6 +435,7 @@ function highlight(menu,num){
                 }
             }
         }
-        menu.active_Cell.parent.fill = 'green';
+        menu.active_Cell.parent.stroke = "3px yellow";
+        menu.active_Cell.parent.zIndex = 'front';
     }
 }
