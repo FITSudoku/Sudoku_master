@@ -174,8 +174,11 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
             var num = (j * 3) + i + 1;
             var color = 'white';
             if (game.autoSweep) //Only add numbers that are not constrained
-                if (!menu.constraints[num])
+                if (!menu.constraints[num]){
                     color = 'blue';
+                    if(boardType === 'color')
+                        color = colorMap[num];
+                }
             add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j,color);
         }
     }
