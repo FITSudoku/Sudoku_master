@@ -220,6 +220,8 @@ function add_Menu(canvas, menu, index, jndex, x, y, i, j,color) { // disp menu n
             menu.active_Cell.text = this.text; //sets new value for cell
             menu.user[index][jndex] = this.text; // edits user board for new value
         }
+        if(boardType === 'color')
+            menu.active_Cell.parent.fill = colorMap[menu.user[index][jndex]];
         menu.obj.remove(); // removes dummy+childrne menu from disp
         menu.check = false;
     });
@@ -418,7 +420,7 @@ function toggle_boardType() { //Function to toggle Auto Sweep
 
 //------------------------Help Functions--------------------------------------
 function highlight(menu,num){
-    menu.obj.remove();
+    game.canvas.removeChild(menu.obj);
     console.log("hightlight:"+num);
     for(var i = 0; i < menu.user.length; i++){
         for(var j = 0; j < menu.user.length; j++){
@@ -439,7 +441,9 @@ function highlight(menu,num){
                 }
             }
         }
-        menu.active_Cell.parent.stroke = "3px yellow";
+        if(boardType === 'color')
+            menu.active_Cell.parent.fill = colorMap[num];
+        menu.active_Cell.parent.stroke = "5px yellow";
         menu.active_Cell.parent.zIndex = 'front';
     }
 }
