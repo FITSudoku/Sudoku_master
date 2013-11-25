@@ -14,6 +14,7 @@ var game = null; // becuase button on html cant access non globals
 
 function gData(cName, _givens, _solutions){// new type that holds all data about the game	
     this.autoSweep = false;
+    this.highlight = false;
     this.inGiven = _givens;
     this.inSol = _solutions;
     this.givens = to_2D(_givens); // converts given 1d array into 2d array of board givens 
@@ -111,7 +112,7 @@ function add_Cell(canvas, menu, index, jndex, color) { // add cell object to can
         clear_Cells(menu);
         cellText.text = num;
         menu.user[index][jndex] = num;
-        if(num != ' ')
+        if(num != ' ' && game.highlight)
             highlight(menu, num);
         canvas.redraw();
     });
@@ -336,6 +337,11 @@ function checker() { // checks puzzle for correctness
 
 function toggle_autoSweep() { //Function to toggle Auto Sweep	
     game.autoSweep = !game.autoSweep; // cleaner toggle then if statment 
+}
+
+function toggle_highlight() { //Function to toggle Auto Sweep	
+    game.highlight = !game.highlight; // cleaner toggle then if statment
+    console.log("Highlight: "+game.highlight);
 }
 
 //------------------------Help Functions--------------------------------------
