@@ -10,21 +10,22 @@ var solution_Puzzle = [6, 7, 2, 1, 4, 5, 3, 9, 8, 1, 4, 5, 9, 8, 3, 6, 7, 2, 3, 
                                                 7, 9, 3, 5, 8, 3, 1, 4, 5, 9, 2, 6, 7]; //An array of entries for the sample puzzle
 var game = null; // becuase button on html cant access non globals
 var colorMap = {};
+var boardType = 'color';
 //-------------------------Types and initialization
 
 function gData(cName, _givens, _solutions){// new type that holds all data about the game	
     this.autoSweep = false;
     this.highlight = false;
     this.inGiven = _givens;
+    this.given = create_Bool_Array(_givens); // bool 2d array for checking if cell is a given
     this.inSol = _solutions;
-    colorMap[' '] = "white";
-    var colors = ["black", "green", "orange", "grey", "red", "yellow", "indigo", "violet", "teal"];
+    colorMap[' '] = '';
+    var colors = ["navy", "green", "orange", "grey", "red", "yellow", "indigo", "violet", "teal"];
     for (var i = 0; i < 9; i++) {
         colorMap[i+1] = colors[i];
     }
     this.givens = to_2D(_givens); // converts given 1d array into 2d array of board givens 
     this.solu = to_2D(_solutions); // 2d array of solution to game
-    this.given = create_Bool_Array(_givens); // bool 2d array for checking if cell is a given
     this.canvas = oCanvas.create({ // ocanvas call to link html canvas 
         canvas: "#" + cName, // canvas to add from html
         fps: 60
@@ -74,16 +75,32 @@ function setup_Cells(canvas, given, menu, cell_Array) { // creates and draws cel
     for (var i = 0; i < given.length; i++) {
         cell_Array[i] = [];
         for (var j = 0; j < given.length; j++) {
-            var color = 'black'; // not given, future proofing for adding color
-            if (given[i][j]) //if cell being added is a given
-                color = 'red'; // given color
-            cell_Array[i][j] = add_Cell(canvas, menu, i, j, color); //creates cell and menu elements and fills them with data 
+            cell_Array[i][j] = add_Cell(canvas, menu, i, j,given); //creates cell and menu elements and fills them with data 
         }
     }
 }
 
-function add_Cell(canvas, menu, index, jndex, color) { // add cell object to canvas
+function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canvas
     //console.log(menu.user[index][jndex]);
+    var colorCell = null;
+    var colorData = null;
+    var data = null;
+    if(boardType === 'color'){
+        colorCell = colorMap[menu.user[index][jndex]];
+        colorData = colorCell;
+        data = ' ';
+        if (given[index][jndex]){ //if cell being added is a given
+            data = '*';
+            colorData = 'black';
+        }
+    }else{
+        colorData = 'black'; // not given, future proofing for adding color
+        colorCell = '';
+        data = menu.user[index][jndex];
+        if (given[index][jndex]) //if cell being added is a given
+            colorData = 'red'; // given color
+    }
+        
     var cell = canvas.display.rectangle({
         x: (canvas.width / menu.user.length) * index + (canvas.width / (menu.user.length * 2)), //center of cell
         y: (canvas.width / menu.user.length) * jndex + (canvas.width / (menu.user.length * 2)), //messy to make text alignment easier
@@ -94,7 +111,7 @@ function add_Cell(canvas, menu, index, jndex, color) { // add cell object to can
         width: canvas.width / menu.user.length,
         height: canvas.width / menu.user.length,
         stroke: "1px black",
-        fill: colorMap[menu.user[index][jndex]]
+        fill: colorCell
     });
     var cellText = canvas.display.text({ // what goes into the cell
         x: 0, // use parent as child
@@ -104,8 +121,8 @@ function add_Cell(canvas, menu, index, jndex, color) { // add cell object to can
             y: "center"
         },
         font: "bold 40px sans-serif",
-        text: menu.user[index][jndex], // if this does not work. change the way it is passed
-        fill: colorMap[menu.user[index][jndex]]//mapColor(menu.user[index][jndex]) // red for given, black for user 
+        text:data , // if this does not work. change the way it is passed
+        fill: colorData//mapColor(menu.user[index][jndex]) // red for given, black for user 
     });
     cell.addChild(cellText); // binds the cell and the text toeachother
     canvas.addChild(cell); // adds cell/text to canvas object
@@ -123,7 +140,7 @@ function add_Cell(canvas, menu, index, jndex, color) { // add cell object to can
             highlight(menu, num);
         canvas.redraw();
     });
-    if (color === 'black') { // black == user cell, red == given
+    if (!given[index][jndex]) { // black == user cell, red == given
         cell.bind("click", function () { // on click action
             num = menu.user[index][jndex];
             clear_Cells(menu);
@@ -250,7 +267,11 @@ function clear_Cells(menu){ // clears cell colors
     for(var i = 0; i < menu.user.length; i++)
         for(var j = 0; j < menu.user.length; j++){
             console.log(menu.user[i][j]);
-            game.cell_Array[i][j].fill = mapColor[menu.user[i][j]];
+            if(boardType === 'color')
+                game.cell_Array[i][j].fill = colorMap[menu.user[i][j]];
+            else
+                game.cell_Array[i][j].fill = '';
+                
         }
 }
 
@@ -269,7 +290,7 @@ function find_constraints (menu,column,row) { //Finds all constraints and return
     //console.log(boolArray);
 	for (var rowIdx = 0; rowIdx < 9; rowIdx++) //Scan Row
         if(menu.user[column][rowIdx] != ' ') 
-		  boolArray[menu.user[column][rowIdx]] = false;
+            boolArray[menu.user[column][rowIdx]] = false;
     //console.log(boolArray);
 	return (boolArray);	
 }
@@ -313,6 +334,7 @@ function mapColor(num){
 //------------------------Button functions-----------------------------------
 
 function start() {
+    
     if(active){ // if start button is pressed while game is running, run restart funtion
         alert("restarting");
         restart();
@@ -370,6 +392,12 @@ function toggle_autoSweep() { //Function to toggle Auto Sweep
 function toggle_highlight() { //Function to toggle Auto Sweep	
     game.highlight = !game.highlight; // cleaner toggle then if statment
     console.log("Highlight: "+game.highlight);
+}
+function toggle_boardType() { //Function to toggle Auto Sweep	
+    if(boardType === 'color')
+        boardType = 'text';
+    else
+        boardType = 'color';
 }
 
 //------------------------Help Functions--------------------------------------
