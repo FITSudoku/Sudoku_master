@@ -25,6 +25,17 @@ canvas{
       color: white;
       font-family: helvetica;
     }
+    
+    clock {
+        background: blue;
+		color: white;
+		//font-weight: bold; 
+		border: 10px;
+		padding: 10px;
+        	font-size: 15px;
+		font-family: Cursive;
+		border-radius: 10px; 
+    }
 	button[type="General"]{
 		background: blue;
 		color: white;
@@ -41,12 +52,14 @@ canvas{
 <center>
 <body><div id="body"> 
 <h1>Dev Project</h1>
-<button type="General" onclick="start()">Start Game</button>
-<form>
-<input type="text" id="timeOutput">
-</form> 
+<button type="General" onclick="start()">Start Game</button> 
 <br>
-
+<br>
+<b>Time:</b>
+<clock id="timeOutput">
+0
+</clock>
+<br>
 <br>
 <button type="General" onclick="toggle_autoSweep()">Auto Sweep</button>
 <button type="General" onclick="">Highlight Regions</button>
