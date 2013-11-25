@@ -138,7 +138,15 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
 	}              
     menu.obj = canvas.display.rectangle({// dummy object to hold 9 small objects to create menu
         x: menu.active_Cell.parent.abs_x,
-        y: menu.active_Cell.parent.abs_y
+        y: menu.active_Cell.parent.abs_y,
+        origin: {
+            x: "center",
+            y: "center"
+        },
+        width: (canvas.width / menu.user.length) - 3,
+        height: (canvas.width / menu.user.length) -3,
+        fill: 'white'
+        
     });
     menu.constraints = find_constraints(menu,index, jndex); // this is out of scope for used later...        
     for (var i = 0; i < 3; i++){
