@@ -186,6 +186,9 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
 }
 
 function add_Menu(canvas, menu, index, jndex, x, y, i, j,color) { // disp menu numbers
+    var boxColor = 'blue';
+    if(boardType === 'color')
+        boxColor = colorMap[(j * 3) + i + 1];
     var menu_Cell = canvas.display.rectangle({
         x: x, //center of cell
         y: y,
@@ -197,7 +200,8 @@ function add_Menu(canvas, menu, index, jndex, x, y, i, j,color) { // disp menu n
         height: canvas.width / (menu.user.length * 3),
         fill: "blue",
         stroke: "1px black",
-        text: (j * 3) + i + 1
+        text: (j * 3) + i + 1,
+        fill: boxColor
     });
     var menu_Cell_Text = canvas.display.text({ // what goes into the cell
         origin: {
