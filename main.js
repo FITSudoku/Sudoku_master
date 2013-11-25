@@ -1,7 +1,7 @@
 /*jshint indent: 4 */
 /*global oCanvas, console, alert, stopCount, timedCount */ //used to hide erros
 var active = false;
-var given_Puzzle = [6, ' ', ' ', 1, ' ', 5, ' ', ' ', ' ', 1, 4, ' ', ' ', ' ', ' ', 6, 7, ' ', ' ', 8,
+var given_Puzzle = [6, 7, ' ', 1, ' ', 5, ' ', ' ', 8, 1, 4, ' ', ' ', ' ', ' ', 6, 7, ' ', ' ', 8,
                                         ' ', ' ', ' ', 2, 4, ' ', ' ', ' ', 6, 3, ' ', 7, ' ', ' ', 1, ' ', 9, ' ', ' ', ' ',
                                         ' ', ' ', ' ', ' ', 3, ' ', 1, ' ', ' ', 9, ' ', 5, 2, ' ', ' ', ' ', 7, 2, ' ', ' ', ' ',
                                         8, ' ', ' ', 2, 6, ' ', ' ', ' ', ' ', 3, 5, ' ', ' ', ' ', 4, ' ', 9, ' ', ' ', ' ']; // givens to start the game                                         
@@ -264,15 +264,6 @@ function find_constraints (menu,column,row) { //Finds all constraints and return
                 boolArray[menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)]] = false;
     //console.log(boolArray);    
 	for (var columnIdx = 0; columnIdx < 9; columnIdx++) //Scan column
-<<<<<<< HEAD
-        if(menu.user[columnIdx][row] != ' ')
-            boolArray[menu.user[columnIdx][row]] = false;
-    console.log(boolArray);
-	for (var rowIdx = 0; rowIdx < 9; rowIdx++) //Scan Row
-        if(menu.user[column][rowIdx] != ' ')
-            boolArray[menu.user[column][rowIdx]] = false;
-    console.log(boolArray);
-=======
         if(menu.user[columnIdx][row] != ' ') 
             boolArray[menu.user[columnIdx][row]] = false;
     //console.log(boolArray);
@@ -280,7 +271,6 @@ function find_constraints (menu,column,row) { //Finds all constraints and return
         if(menu.user[column][rowIdx] != ' ') 
 		  boolArray[menu.user[column][rowIdx]] = false;
     //console.log(boolArray);
->>>>>>> Fixing timer bug, adding color support
 	return (boolArray);	
 }
 //------------------------Data manipulation fucntions------------------------
