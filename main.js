@@ -144,9 +144,10 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
     for (var i = 0; i < 3; i++){
         for (var j = 0; j < 3; j++){
             var num = (j * 3) + i + 1;
-            var color = 'blue';
-            if (menu.constraints[num] || game.autoSweep) //Only add number that are not constrained
-                color = 'white';
+            var color = 'white';
+            if (game.autoSweep) //Only add numbers that are not constrained
+                if (!menu.constraints[num])
+                    color = 'blue';
             add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j,color);
         }
     }
@@ -253,12 +254,12 @@ function find_constraints (menu,column,row) { //Finds all constraints and return
                 boolArray[menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)]] = false;
                console.log(boolArray);    
 	for (var columnIdx = 0; columnIdx < 9; columnIdx++) //Scan column
-        if(menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)] != ' ') 
-		  boolArray[menu.user[columnIdx][row]] = false;
-        console.log(boolArray);
+        if(menu.user[columnIdx][row] != ' ')
+            boolArray[menu.user[columnIdx][row]] = false;
+    console.log(boolArray);
 	for (var rowIdx = 0; rowIdx < 9; rowIdx++) //Scan Row
-        if(menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)] != ' ') 
-		  boolArray[menu.user[column][rowIdx]] = false;
+        if(menu.user[column][rowIdx] != ' ')
+            boolArray[menu.user[column][rowIdx]] = false;
     console.log(boolArray);
 	return (boolArray);	
 }
@@ -382,4 +383,3 @@ function highlight(menu,num){
         menu.active_Cell.parent.fill = 'green';
     }
 }
-
