@@ -87,7 +87,7 @@ function add_Cell(canvas, menu, index, jndex, color) { // add cell object to can
         width: canvas.width / menu.user.length,
         height: canvas.width / menu.user.length,
         stroke: "1px black",
-        fill: mapColor(menu.user[index][jndex])
+        //fill: mapColor(menu.user[index][jndex])
     });
     var cellText = canvas.display.text({ // what goes into the cell
         x: 0, // use parent as child
@@ -98,7 +98,7 @@ function add_Cell(canvas, menu, index, jndex, color) { // add cell object to can
         },
         font: "bold 40px sans-serif",
         text: menu.user[index][jndex], // if this does not work. change the way it is passed
-        fill: mapColor(menu.user[index][jndex]) // red for given, black for user 
+        fill: color//mapColor(menu.user[index][jndex]) // red for given, black for user 
     });
     cell.addChild(cellText); // binds the cell and the text toeachother
     canvas.addChild(cell); // adds cell/text to canvas object
@@ -278,22 +278,24 @@ function to_2D(inArray) { // takes in 1d array and converts to 2d, must pass cor
 
 function mapColor(num){
 
-    return red if given not using colors
-    return black if given and using colors
-    return color if using colors and not given
-    return color;   
+  //  return red if given not using colors
+   // return black if given and using colors
+   // return color if using colors and not given
+    //return color;   
 }
 //------------------------Button functions-----------------------------------
 
 function start() {
     if(active){ // if start button is pressed while game is running, run restart funtion
+        alert("restarting");
         restart();
-        delete game;
+    }else{
+        game = new gData("myCanvas", given_Puzzle, solution_Puzzle); // sets up game
+        active = true;
+        stopCount();    
+        timedCount();
+
     }
-    game = new gData("myCanvas", given_Puzzle, solution_Puzzle); // sets up game
-    stopCount();    
-    timedCount();
-    active = true;
 }
 
 function restart() { // puts original values in cells
