@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="canvas.js"></script>
-<title>Soduku Project</title>
+<!script src="http://ocanvas.org/source/ocanvas-2.5.1.js"><!/script>
+<script src="ocanvas-2.5.1.js"></script>
+<script src="dev.js"></script>
+<script src="stopwatch.js"></script>
+<<<<<<< HEAD
+<script src="typeswitch.js"></script>
+=======
+>>>>>>> f060000b96306d99db2f7b8923b7ec2b96a8622c
+<title>Sudoku Project</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
 <style type="text/css">
 .wrapper{
@@ -17,13 +24,26 @@ canvas{
 }
     body {
       text-align: center;
-      background: url(assets/wood.jpg);
       background-position: center;
 	  background-repeat: repeat-x: 
       color: white;
       font-family: helvetica;
     }
-	button[type="start"]{
+<<<<<<< HEAD
+=======
+    
+    clock {
+        background: blue;
+		color: white;
+		//font-weight: bold; 
+		border: 10px;
+		padding: 10px;
+        	font-size: 15px;
+		font-family: Cursive;
+		border-radius: 10px; 
+    }
+>>>>>>> f060000b96306d99db2f7b8923b7ec2b96a8622c
+	button[type="General"]{
 		background: blue;
 		color: white;
 		//font-weight: bold; 
@@ -38,20 +58,33 @@ canvas{
 </head>
 <center>
 <body><div id="body"> 
-<h1>Sudoku Project</h1>
-<h2>Pre Alpha</h2>
-<button type="start" onclick="init(500)">Start Game</button>
-
+<h1>Dev Project</h1>
+<<<<<<< HEAD
+<button type="General" onclick="start()">Start Game</button>
+<form>
+<input type="text" id="timeOutput">
+</form> 
 <br>
+
+=======
+<button type="General" onclick="start()">Start Game</button> 
+<br>
+<br>
+<b>Time:</b>
+<clock id="timeOutput">
+0
+</clock>
+<br>
+>>>>>>> f060000b96306d99db2f7b8923b7ec2b96a8622c
+<br>
+<button type="General" onclick="toggle_autoSweep()">Auto Sweep</button>
+<button type="General" onclick="">Highlight Regions</button>
+<button type="General" onclick="">Show Errors</button>
 <div class="wrapper">
-<canvas id="permCanvas" width="500" height="500" style="border:5px solid #000000">No HTML5 Support D; </canvas>
-<canvas id="colorCanvas" width="500" height="500" style="border:5px solid #000000"></canvas>
-<canvas id="menuCanvas" width="500" height="500" style="border:5px solid #000000"></canvas>
-
-<canvas id="myCanvas" width="500" height="500" style="border:5px solid #000000"></canvas>
-
+<canvas id="myCanvas" width="500" height="500" style="border:3px solid #000000"></canvas>
 </div><br>
-<button type="start" onclick="solver()">Solve game</button>
-<button type="start" onclick="checker()">Check Game</button>
+<button type="General" onclick="solver()">Solve game</button>
+<button type="General" onclick="checker()">Check Game</button>
+<button type="General" onclick="restart()">Restart</button>
 </div></body></center>
 </html>
