@@ -279,7 +279,6 @@ function hover(canvas, menu, index, jndex) {
 function clear_Cells(menu){ // clears cell colors
     for(var i = 0; i < menu.user.length; i++)
         for(var j = 0; j < menu.user.length; j++){
-            console.log(menu.user[i][j]);
             if(boardType === 'color'){
                 console.log(menu.user[i][j]);
                 game.cell_Array[i][j].fill = colorMap[menu.user[i][j]];
