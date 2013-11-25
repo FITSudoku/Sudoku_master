@@ -1,5 +1,5 @@
 /*jshint indent: 4 */
-/*global oCanvas, console, alert, stopwatch*/ //used to hide erros
+/*global oCanvas, console, alert, stopCount, timedCount */ //used to hide erros
 var given_Puzzle = [' ', ' ', ' ', 1, ' ', 5, ' ', ' ', ' ', 1, 4, ' ', ' ', ' ', ' ', 6, 7, ' ', ' ', 8,
                                         ' ', ' ', ' ', 2, 4, ' ', ' ', ' ', 6, 3, ' ', 7, ' ', ' ', 1, ' ', 9, ' ', ' ', ' ',
                                         ' ', ' ', ' ', ' ', 3, ' ', 1, ' ', ' ', 9, ' ', 5, 2, ' ', ' ', ' ', 7, 2, ' ', ' ', ' ',
@@ -10,11 +10,8 @@ var solution_Puzzle = [6, 7, 2, 1, 4, 5, 3, 9, 8, 1, 4, 5, 9, 8, 3, 6, 7, 2, 3, 
 var game = null; // becuase button on html cant access non globals
 
 //-------------------------Types and initialization
-<<<<<<< HEAD
+
 function gData(cName, _givens, _solutions){// new type that holds all data about the game	
-=======
-function gData(cName, _givens, _solutions) {// new type that holds all data about the game	
->>>>>>> f060000b96306d99db2f7b8923b7ec2b96a8622c
     this.autoSweep = false;
     this.inGiven = _givens;
     this.inSol = _solutions;
@@ -39,12 +36,8 @@ function Menu(canvas, user_Board) {
     this.mouse_Obj = null; // xbox to clear active cell of data
     this.xBox_Check = false; // checks if xbox in top right of cell is present
     this.user = user_Board;
-<<<<<<< HEAD
     this.constraints= null;
-=======
->>>>>>> f060000b96306d99db2f7b8923b7ec2b96a8622c
 }
-// ------------------------Functions----------------------------
 
 //-------------------------Board functions--------------------
 function Draw_Grids(canvas) { // draws the background grids for the board
@@ -143,36 +136,17 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
         x: menu.active_Cell.parent.abs_x,
         y: menu.active_Cell.parent.abs_y
     });
-<<<<<<< HEAD
     menu.constraints = find_constraints(menu,index, jndex); // this is out of scope for used later...        
     for (var i = 0; i < 3; i++){
         for (var j = 0; j < 3; j++){
-            var num = (j * 3) + i + 1;                     
-               if (menu.constraints[num] || game.autoSweep) //Only add number that are not constrained	 
-                    add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j);
-=======
-    if (game.autoSweep) { //If auto sweep is on, get constraint........bad idea to put this here, setupmenu only runs once, not able to toggle in middle of game	
-        var constraints = find_constraints(index, jndex); // this is out of scope for used later...
-    }                
-    for (var i = 0; i < 3; i++){
-        for (var j = 0; j < 3; j++){
-            if (game.autoSweep) {        //why not put this check outside...so you dont have to run through a for loop for no reason	 
-                var num = (j * 3) + i + 1;                     
-                if (constraints[num]) //Only add number that are not constrained	 
-                    add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j); 
-            } else {
+            var num = (j * 3) + i + 1;
+            if (menu.constraints[num] || game.autoSweep) //Only add number that are not constrained	 
                 add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j);
-            }
->>>>>>> f060000b96306d99db2f7b8923b7ec2b96a8622c
         }
     }
     canvas.addChild(menu.obj); // disp dummy+children
     menu.check = true;        
-<<<<<<< HEAD
     menu.obj.zIndex = 'front';
-=======
-    menu.obj.zIndex('front');
->>>>>>> f060000b96306d99db2f7b8923b7ec2b96a8622c
     canvas.redraw(); // placed here to update after move, else menu lags
 }
 
@@ -260,28 +234,17 @@ function clear_Cells(menu){ // clears cell colors
             game.cell_Array[i][j].fill = '';
 }
 
-<<<<<<< HEAD
 function find_constraints (menu,column,row) { //Finds all constraints and returns a Boolean array representing the values that are valid for that cell.
 										//NOTE: the index for the array is shifted to match number values:  booleanArray[1] represents the number 1.
 	var boolArray = [null,true,true,true,true,true,true,true,true,true];	
 	for(var y = 0; y < 3; y++) //Scan 3 by 3 box.  Algorithm by Alec.....
         for(var z = 0; z < 3; z++)
-            boolArray[menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)]] = false;                                                                   
-=======
-function find_constraints (column,row) { //Finds all constraints and returns a Boolean array representing the values that are valid for that cell.
-										//NOTE: the index for the array is shifted to match number values:  booleanArray[1] represents the number 1.
-	var boolArray = [null,true,true,true,true,true,true,true,true,true];	
-	for(var y = 0; y < 3; y++) //Scan 3 by 3 box.  Algorithm by Alec.....more of debuged by alec if you are going to call it anything
-        for(var z = 0; z < 3; z++)
-            boolArray[game.menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)]] = false;                                                                   
->>>>>>> f060000b96306d99db2f7b8923b7ec2b96a8622c
+            boolArray[menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)]] = false;                                                                    
 	for (var columnIdx = 0; columnIdx < 9; columnIdx++) //Scan column
-		boolArray[game.menu.user[columnIdx][row]] = false;
+		boolArray[menu.user[columnIdx][row]] = false;
 	for (var rowIdx = 0; rowIdx < 9; rowIdx++) //Scan Row
-		boolArray[game.menu.user[column][rowIdx]] = false;
-	
-	return (boolArray);
-	
+		boolArray[menu.user[column][rowIdx]] = false;
+	return (boolArray);	
 }
 //------------------------Data manipulation fucntions------------------------
 function create_Bool_Array(inArray) { // creates a 2d bool array of givens
@@ -314,13 +277,8 @@ function to_2D(inArray) { // takes in 1d array and converts to 2d, must pass cor
 
 function start() {
     game = new gData("myCanvas", given_Puzzle, solution_Puzzle); // sets up game
-<<<<<<< HEAD
-    //stopCount();    
-   // timedCount();
-=======
     stopCount();    
     timedCount();
->>>>>>> f060000b96306d99db2f7b8923b7ec2b96a8622c
 }
 
 function restart() { // puts original values in cells
@@ -329,13 +287,8 @@ function restart() { // puts original values in cells
         for (var j = 0; j < game.menu.user.length; j++)
             game.cell_Array[i][j].children[0].text = game.menu.user[i][j]; // assignment works, data replace is bad
     game.canvas.redraw();
-<<<<<<< HEAD
-    stopwatch.stopCount();       
-    stopwatch.timedCount();
-=======
     stopCount();       
     timedCount();
->>>>>>> f060000b96306d99db2f7b8923b7ec2b96a8622c
 }
 
 function solver() { // solves the puzzle
@@ -344,11 +297,7 @@ function solver() { // solves the puzzle
         for (var j = 0; j < game.menu.user.length; j++)
             game.cell_Array[i][j].children[0].text = game.menu.user[i][j]; // assignment works, data replace is bad
     game.canvas.redraw();
-<<<<<<< HEAD
-    stopwatch.stopCount();
-=======
     stopCount();
->>>>>>> f060000b96306d99db2f7b8923b7ec2b96a8622c
 }
 
 function checker() { // checks puzzle for correctness
@@ -389,16 +338,13 @@ function highlight(menu,num){
                 for(var y = 0; y < 3; y++) {
                     for(var z = 0; z < 3; z++){
                         count++;
-<<<<<<< HEAD
                         game.cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].fill = 'blue';
                         game.cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].zIndex = 'back';
-                                                                                      
-=======
                         console.log("X:"+((Math.floor(i/3)*3)+y)+" y:"+((Math.floor(j/3)*3)+z)+" C:"+count);
                         game.cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].fill = 'blue';
                         game.cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].zIndex = 'back';
                         console.log("X:"+i+" y:"+j+" C:"+count);                                                                                         
->>>>>>> f060000b96306d99db2f7b8923b7ec2b96a8622c
+
                     }
                 }
             }
