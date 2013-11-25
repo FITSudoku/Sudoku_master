@@ -1,7 +1,7 @@
 /*jshint indent: 4 */
 /*global oCanvas, console, alert, stopCount, timedCount */ //used to hide erros
 var active = false;
-var given_Puzzle = [' ', ' ', ' ', 1, ' ', 5, ' ', ' ', ' ', 1, 4, ' ', ' ', ' ', ' ', 6, 7, ' ', ' ', 8,
+var given_Puzzle = [6, ' ', ' ', 1, ' ', 5, ' ', ' ', ' ', 1, 4, ' ', ' ', ' ', ' ', 6, 7, ' ', ' ', 8,
                                         ' ', ' ', ' ', 2, 4, ' ', ' ', ' ', 6, 3, ' ', 7, ' ', ' ', 1, ' ', 9, ' ', ' ', ' ',
                                         ' ', ' ', ' ', ' ', 3, ' ', 1, ' ', ' ', 9, ' ', 5, 2, ' ', ' ', ' ', 7, 2, ' ', ' ', ' ',
                                         8, ' ', ' ', 2, 6, ' ', ' ', ' ', ' ', 3, 5, ' ', ' ', ' ', 4, ' ', 9, ' ', ' ', ' ']; // givens to start the game                                         
@@ -9,7 +9,7 @@ var solution_Puzzle = [6, 7, 2, 1, 4, 5, 3, 9, 8, 1, 4, 5, 9, 8, 3, 6, 7, 2, 3, 
                                                 1, 9, 9, 5, 8, 6, 2, 1, 7, 4, 3, 7, 1, 4, 3, 9, 8, 5, 2, 6, 5, 9, 7, 2, 3, 6, 1, 8, 4, 4, 2, 6, 8, 1,
                                                 7, 9, 3, 5, 8, 3, 1, 4, 5, 9, 2, 6, 7]; //An array of entries for the sample puzzle
 var game = null; // becuase button on html cant access non globals
-
+var colorMap = {};
 //-------------------------Types and initialization
 
 function gData(cName, _givens, _solutions){// new type that holds all data about the game	
@@ -17,6 +17,11 @@ function gData(cName, _givens, _solutions){// new type that holds all data about
     this.highlight = false;
     this.inGiven = _givens;
     this.inSol = _solutions;
+    colorMap[' '] = "white";
+    var colors = ["black", "green", "orange", "grey", "red", "yellow", "indigo", "violet", "teal"];
+    for (var i = 0; i < 9; i++) {
+        colorMap[i+1] = colors[i];
+    }
     this.givens = to_2D(_givens); // converts given 1d array into 2d array of board givens 
     this.solu = to_2D(_solutions); // 2d array of solution to game
     this.given = create_Bool_Array(_givens); // bool 2d array for checking if cell is a given
@@ -25,9 +30,9 @@ function gData(cName, _givens, _solutions){// new type that holds all data about
         fps: 60
     });
     this.cell_Array = [];
-    Draw_Grids(this.canvas); // draws big grid lines
     this.menu = new Menu(this.canvas, to_2D(_givens));
     setup_Cells(this.canvas, this.given, this.menu, this.cell_Array); // creates cell objects and fills them with givens
+    Draw_Grids(this.canvas); // draws big grid lines
 }
 
 function Menu(canvas, user_Board) {
@@ -78,6 +83,7 @@ function setup_Cells(canvas, given, menu, cell_Array) { // creates and draws cel
 }
 
 function add_Cell(canvas, menu, index, jndex, color) { // add cell object to canvas
+    //console.log(menu.user[index][jndex]);
     var cell = canvas.display.rectangle({
         x: (canvas.width / menu.user.length) * index + (canvas.width / (menu.user.length * 2)), //center of cell
         y: (canvas.width / menu.user.length) * jndex + (canvas.width / (menu.user.length * 2)), //messy to make text alignment easier
@@ -88,7 +94,7 @@ function add_Cell(canvas, menu, index, jndex, color) { // add cell object to can
         width: canvas.width / menu.user.length,
         height: canvas.width / menu.user.length,
         stroke: "1px black",
-        //fill: mapColor(menu.user[index][jndex])
+        fill: colorMap[menu.user[index][jndex]]
     });
     var cellText = canvas.display.text({ // what goes into the cell
         x: 0, // use parent as child
@@ -99,10 +105,11 @@ function add_Cell(canvas, menu, index, jndex, color) { // add cell object to can
         },
         font: "bold 40px sans-serif",
         text: menu.user[index][jndex], // if this does not work. change the way it is passed
-        fill: color//mapColor(menu.user[index][jndex]) // red for given, black for user 
+        fill: colorMap[menu.user[index][jndex]]//mapColor(menu.user[index][jndex]) // red for given, black for user 
     });
     cell.addChild(cellText); // binds the cell and the text toeachother
     canvas.addChild(cell); // adds cell/text to canvas object
+    cell.zIndex = 'back';
     var num = null;
     cell.bind("mousedown", function () {
         num = menu.user[index][jndex];
@@ -184,10 +191,10 @@ function add_Menu(canvas, menu, index, jndex, x, y, i, j,color) { // disp menu n
     menu_Cell.addChild(menu_Cell_Text);
     menu.obj.addChild(menu_Cell);
     menu_Cell.bind("click tap", function () { // click bind for small menu
-       if(color === 'white'){
+        if(color === 'white'){
             menu.active_Cell.text = this.text; //sets new value for cell
             menu.user[index][jndex] = this.text; // edits user board for new value
-       }
+        }
         menu.obj.remove(); // removes dummy+childrne menu from disp
         menu.check = false;
     });
@@ -223,11 +230,12 @@ function hover(canvas, menu, index, jndex) {
                 y: "top"
             },
             font: "bold 13px sans-serif",
-            text: 'X', // if this does not work. change the wya it is passed
+            text: 'X', // if this does not work. change the way it is passed
             fill: 'grey' // red for given, black for user 
         });
         xBox.addChild(xbox_Text);
         canvas.addChild(xBox);
+        xBox.zIndex = 'front';
         menu.mouse_Obj = xBox;
         xBox.bind("click tap", function () {
             menu.hover_Cell.children[0].text = ' ';
@@ -240,20 +248,23 @@ function hover(canvas, menu, index, jndex) {
 
 function clear_Cells(menu){ // clears cell colors
     for(var i = 0; i < menu.user.length; i++)
-        for(var j = 0; j < menu.user.length; j++)
-            game.cell_Array[i][j].fill = '';
+        for(var j = 0; j < menu.user.length; j++){
+            console.log(menu.user[i][j]);
+            game.cell_Array[i][j].fill = mapColor[menu.user[i][j]];
+        }
 }
 
 function find_constraints (menu,column,row) { //Finds all constraints and returns a Boolean array representing the values that are valid for that cell.
 										//NOTE: the index for the array is shifted to match number values:  booleanArray[1] represents the number 1.
 	var boolArray = [null,true,true,true,true,true,true,true,true,true];
-    console.log(boolArray);
+    //console.log(boolArray);
 	for(var y = 0; y < 3; y++) //Scan 3 by 3 box.  Algorithm by Alec.....
         for(var z = 0; z < 3; z++)
             if(menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)] != ' ') 
                 boolArray[menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)]] = false;
-               console.log(boolArray);    
+    //console.log(boolArray);    
 	for (var columnIdx = 0; columnIdx < 9; columnIdx++) //Scan column
+<<<<<<< HEAD
         if(menu.user[columnIdx][row] != ' ')
             boolArray[menu.user[columnIdx][row]] = false;
     console.log(boolArray);
@@ -261,6 +272,15 @@ function find_constraints (menu,column,row) { //Finds all constraints and return
         if(menu.user[column][rowIdx] != ' ')
             boolArray[menu.user[column][rowIdx]] = false;
     console.log(boolArray);
+=======
+        if(menu.user[columnIdx][row] != ' ') 
+            boolArray[menu.user[columnIdx][row]] = false;
+    //console.log(boolArray);
+	for (var rowIdx = 0; rowIdx < 9; rowIdx++) //Scan Row
+        if(menu.user[column][rowIdx] != ' ') 
+		  boolArray[menu.user[column][rowIdx]] = false;
+    //console.log(boolArray);
+>>>>>>> Fixing timer bug, adding color support
 	return (boolArray);	
 }
 //------------------------Data manipulation fucntions------------------------
@@ -292,6 +312,9 @@ function to_2D(inArray) { // takes in 1d array and converts to 2d, must pass cor
 
 function mapColor(num){
 
+    var color = colorMap[num];
+    return color;
+    
   //  return red if given not using colors
    // return black if given and using colors
    // return color if using colors and not given
@@ -343,8 +366,10 @@ function checker() { // checks puzzle for correctness
                 break;
             }
         }
-    if(correct)
-        alert("Congradulations, now give us your data!");
+    if(correct){
+        stopCount();
+        alert("Congratulations, now give us your data!");
+    }
     game.canvas.redraw();
 }
 
