@@ -109,7 +109,8 @@ function add_Cell(canvas, menu, index, jndex, color) { // add cell object to can
         clear_Cells(menu);
         cellText.text = num;
         menu.user[index][jndex] = num;
-        highlight(menu, num);
+        if(num != ' ')
+            highlight(menu, num);
         canvas.redraw();
     });
     if (color === 'black') { // black == user cell, red == given
@@ -340,11 +341,6 @@ function highlight(menu,num){
                         count++;
                         game.cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].fill = 'blue';
                         game.cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].zIndex = 'back';
-                        console.log("X:"+((Math.floor(i/3)*3)+y)+" y:"+((Math.floor(j/3)*3)+z)+" C:"+count);
-                        game.cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].fill = 'blue';
-                        game.cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].zIndex = 'back';
-                        console.log("X:"+i+" y:"+j+" C:"+count);                                                                                         
-
                     }
                 }
             }
