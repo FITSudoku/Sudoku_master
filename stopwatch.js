@@ -5,8 +5,8 @@ function stopCount() {
 	clearTimeout(t);
 	c = 0;
 }
-function timedCount() {	
-	document.getElementById('timeOutput').value=c;
+function timedCount() {
+	var el = document.getElementById("timeOutput");
 	el.firstChild.data = c;
 	c=c+1;
 	t=setTimeout("timedCount()",1000);
