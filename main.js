@@ -10,7 +10,7 @@ var solution_Puzzle = [6, 7, 2, 1, 4, 5, 3, 9, 8, 1, 4, 5, 9, 8, 3, 6, 7, 2, 3, 
                                                 7, 9, 3, 5, 8, 3, 1, 4, 5, 9, 2, 6, 7]; //An array of entries for the sample puzzle
 var game = null; // becuase button on html cant access non globals
 var colorMap = {};
-var boardType = 'color';
+var boardType = 'text';
 //-------------------------Types and initialization
 
 function gData(cName, _givens, _solutions){// new type that holds all data about the game	
@@ -394,10 +394,15 @@ function toggle_highlight() { //Function to toggle Auto Sweep
     console.log("Highlight: "+game.highlight);
 }
 function toggle_boardType() { //Function to toggle Auto Sweep	
+    //   setup_Cells(game.canvas, game.given, game.menu, game.cell_Array)
+    var save = game.menu.user;
     if(boardType === 'color')
         boardType = 'text';
     else
         boardType = 'color';
+    game.canvas.reset();
+    game = null;
+    game = new gData("myCanvas", given_Puzzle, solution_Puzzle);
 }
 
 //------------------------Help Functions--------------------------------------
