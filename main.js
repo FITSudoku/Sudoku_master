@@ -121,6 +121,7 @@ function add_Cell(canvas, menu, index, jndex, color) { // add cell object to can
             num = menu.user[index][jndex];
             clear_Cells(menu);
             menu.active_Cell = cellText;
+            menu.constraints = find_constraints(menu,index, jndex);
             setup_Menu(canvas, menu, index, jndex);
         });
         cell.bind("mouseenter", function () {
@@ -139,21 +140,14 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
     menu.obj = canvas.display.rectangle({// dummy object to hold 9 small objects to create menu
         x: menu.active_Cell.parent.abs_x,
         y: menu.active_Cell.parent.abs_y,
-        origin: {
-            x: "center",
-            y: "center"
-        },
-        width: (canvas.width / menu.user.length) - 3,
-        height: (canvas.width / menu.user.length) -3,
-        fill: 'white'
-        
-    });
-    menu.constraints = find_constraints(menu,index, jndex); // this is out of scope for used later...        
+    });   
     for (var i = 0; i < 3; i++){
         for (var j = 0; j < 3; j++){
             var num = (j * 3) + i + 1;
-            if (menu.constraints[num] || game.autoSweep) //Only add number that are not constrained	 
-                add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j);
+            var color = 'blue';
+            if (menu.constraints[num] || game.autoSweep) //Only add number that are not constrained
+                color = 'white';
+            add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j,color);
         }
     }
     canvas.addChild(menu.obj); // disp dummy+children
@@ -162,7 +156,7 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
     canvas.redraw(); // placed here to update after move, else menu lags
 }
 
-function add_Menu(canvas, menu, index, jndex, x, y, i, j) { // disp menu numbers
+function add_Menu(canvas, menu, index, jndex, x, y, i, j,color) { // disp menu numbers
     var menu_Cell = canvas.display.rectangle({
         x: x, //center of cell
         y: y,
@@ -183,14 +177,16 @@ function add_Menu(canvas, menu, index, jndex, x, y, i, j) { // disp menu numbers
         },
         font: "bold 15px sans-serif",
         text: (j * 3) + i + 1, // this took me way longer to figure out then it should
-        fill: "white"
+        fill: color
     });
     menu.active_Cell.parent.fill = '';
     menu_Cell.addChild(menu_Cell_Text);
     menu.obj.addChild(menu_Cell);
     menu_Cell.bind("click tap", function () { // click bind for small menu
-        menu.active_Cell.text = this.text; //sets new value for cell
-        menu.user[index][jndex] = this.text; // edits user board for new value
+       if(color === 'white'){
+            menu.active_Cell.text = this.text; //sets new value for cell
+            menu.user[index][jndex] = this.text; // edits user board for new value
+       }
         menu.obj.remove(); // removes dummy+childrne menu from disp
         menu.check = false;
     });
@@ -235,6 +231,7 @@ function hover(canvas, menu, index, jndex) {
         xBox.bind("click tap", function () {
             menu.hover_Cell.children[0].text = ' ';
             menu.user[index][jndex] = ' ';
+            menu.constraints = find_constraints(menu,index, jndex);
             canvas.redraw(); // prevents removal lag
         });
     }
@@ -248,14 +245,21 @@ function clear_Cells(menu){ // clears cell colors
 
 function find_constraints (menu,column,row) { //Finds all constraints and returns a Boolean array representing the values that are valid for that cell.
 										//NOTE: the index for the array is shifted to match number values:  booleanArray[1] represents the number 1.
-	var boolArray = [null,true,true,true,true,true,true,true,true,true];	
+	var boolArray = [null,true,true,true,true,true,true,true,true,true];
+    console.log(boolArray);
 	for(var y = 0; y < 3; y++) //Scan 3 by 3 box.  Algorithm by Alec.....
         for(var z = 0; z < 3; z++)
-            boolArray[menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)]] = false;                                                                    
+            if(menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)] != ' ') 
+                boolArray[menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)]] = false;
+               console.log(boolArray);    
 	for (var columnIdx = 0; columnIdx < 9; columnIdx++) //Scan column
-		boolArray[menu.user[columnIdx][row]] = false;
+        if(menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)] != ' ') 
+		  boolArray[menu.user[columnIdx][row]] = false;
+        console.log(boolArray);
 	for (var rowIdx = 0; rowIdx < 9; rowIdx++) //Scan Row
-		boolArray[menu.user[column][rowIdx]] = false;
+        if(menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)] != ' ') 
+		  boolArray[menu.user[column][rowIdx]] = false;
+    console.log(boolArray);
 	return (boolArray);	
 }
 //------------------------Data manipulation fucntions------------------------
