@@ -4,7 +4,12 @@ function highlight(menu,num,game){
     console.log("hightlight:"+num);
     for(var i = 0; i < menu.user.length; i++){
         for(var j = 0; j < menu.user.length; j++){
-            if(menu.user[i][j] == num){
+            if(getGame().given[i][j]){
+                getGame().cell_Array[i][j].fill = 'blue';
+                getGame().cell_Array[i][j].zIndex = 'back';
+            }
+                
+            if((menu.user[i][j] == num )){
                 for(var x = 0; x < menu.user.length; x++){
                     getGame().cell_Array[x][j].fill = 'blue';
                     getGame().cell_Array[x][j].zIndex = 'back';
