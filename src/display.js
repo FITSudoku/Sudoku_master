@@ -22,7 +22,10 @@ function Draw_Line(canvas, xstart, ystart, xend, yend) { // draws single line of
 }
 
 function hover(canvas, menu, index, jndex) {
-    if (menu.xBox_Check)
+    if(getGame().given[index][jndex]){
+      menu.mouse_Obj.moveTo(0,canvas.height);  
+    }
+    else if (menu.xBox_Check)
         menu.mouse_Obj.moveTo(menu.hover_Cell.abs_x + (canvas.height / (menu.user.length * 2)),
                               menu.hover_Cell.abs_y - (canvas.height / (menu.user.length * 2)));
     else {

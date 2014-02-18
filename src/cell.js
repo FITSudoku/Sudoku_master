@@ -72,6 +72,11 @@ function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canv
             highlight(menu, num);
         canvas.redraw();
     });
+            cell.bind("mouseenter", function () {
+            menu.hover_Cell = cell;
+            hover(canvas, menu, index, jndex);
+            canvas.redraw(); // prevent xbox lag
+    });
     if (!given[index][jndex]) { // black == user cell, red == given
         cell.bind("click", function () { // on click action
             num = menu.user[index][jndex];
@@ -79,11 +84,6 @@ function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canv
             menu.active_Cell = cellText;
             menu.constraints = find_constraints(menu,index, jndex);
             setup_Menu(canvas, menu, index, jndex);
-        });
-        cell.bind("mouseenter", function () {
-            menu.hover_Cell = cell;
-            hover(canvas, menu, index, jndex);
-            canvas.redraw(); // prevent xbox lag
         });
     }
     return cell;
