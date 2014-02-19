@@ -102,7 +102,7 @@ function add_Menu(canvas, menu, index, jndex, x, y, i, j,color) { // disp menu n
     var num = (j * 3) + i + 1;
     if(getBoardType() === 'color')
         boxColor = getColorMap()[num];
-    if(getBoardType() === 'symbol')
+    if(getBoardType() === 'symbol' || getBoardType() === 'letter')
         num = getSymbolMap()[num];
     var menu_Cell = canvas.display.rectangle({
         x: x, //center of cell
@@ -131,7 +131,7 @@ function add_Menu(canvas, menu, index, jndex, x, y, i, j,color) { // disp menu n
     menu.obj.addChild(menu_Cell);
     menu_Cell.bind("click tap", function () { // click bind for small menu
         if(color === 'white'){
-            if(getBoardType() === 'symbol'){
+            if(getBoardType() === 'symbol'  || getBoardType() === 'letter'){
                 menu.active_Cell.text = getSymbolMap()[this.text]; //sets new value for cell
             }else{
                 menu.active_Cell.text = this.text; //sets new value for cell

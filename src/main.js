@@ -11,6 +11,7 @@ var solution_Puzzle = [6, 7, 2, 1, 4, 5, 3, 9, 8, 1, 4, 5, 9, 8, 3, 6, 7, 2, 3, 
 var game = null; // becuase button on html cant access non globals
 var colorMap = {};
 var symbolMap = {};
+var letterMap = {};
 var boardType = 'text';
 //-----------------------getters
 function getGame(){
@@ -22,7 +23,12 @@ function getColorMap(){
 }
 
 function getSymbolMap(){
-    return symbolMap;
+    if(getBoardType() === 'letter'){
+        console.log("in letter");
+        return letterMap;
+    }
+    else
+        return symbolMap;
 }
 
 function getBoardType(){
@@ -46,6 +52,11 @@ function gData(cName, _givens, _solutions){// new type that holds all data about
     var symbols = ["\u25CE", "\u25BD", "\u25C8", "\u25A1", "\u25CC", "\u2042", "\u203B", "\u2623","\u262F"];
     for (var i = 0; i < 9; i++) {
         symbolMap[i+1] = symbols[i];
+    }    
+    letterMap[' '] = '';
+    var letters = ["A", "B", "C", "D", "E", "F", "G", "H","I"];
+    for (var i = 0; i < 9; i++) {
+        letterMap[i+1] = letters[i];
     }
     this.givens = to_2D(_givens); // converts given 1d array into 2d array of board givens 
     this.solu = to_2D(_solutions); // 2d array of solution to game
@@ -163,6 +174,8 @@ function toggle_boardType() { //Function to toggle Auto Sweep
         boardType = 'text';
     else if(board == '2')
         boardType = 'color';
+    else if(board == '4')
+        boardType = 'letter'
     else
         boardType = 'symbol';
     game.canvas.reset();
