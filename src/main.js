@@ -10,6 +10,7 @@ var solution_Puzzle = [6, 7, 2, 1, 4, 5, 3, 9, 8, 1, 4, 5, 9, 8, 3, 6, 7, 2, 3, 
                         7, 9, 3, 5, 8, 3, 1, 4, 5, 9, 2, 6, 7]; //An array of entries for the sample puzzle
 var game = null; // becuase button on html cant access non globals
 var colorMap = {};
+var symbolMap = {};
 var boardType = 'text';
 //-----------------------getters
 function getGame(){
@@ -18,6 +19,10 @@ function getGame(){
 
 function getColorMap(){
     return colorMap;
+}
+
+function getSymbolMap(){
+    return symbolMap;
 }
 
 function getBoardType(){
@@ -36,6 +41,11 @@ function gData(cName, _givens, _solutions){// new type that holds all data about
     var colors = ["navy", "green", "orange", "grey", "red", "yellow", "indigo", "violet", "teal"];
     for (var i = 0; i < 9; i++) {
         colorMap[i+1] = colors[i];
+    }    
+    symbolMap[' '] = '';
+    var symbols = ["\u25CE", "\u25BD", "\u25C8", "\u25A1", "\u25CC", "\u2042", "\u203B", "\u2623","\u262F"];
+    for (var i = 0; i < 9; i++) {
+        symbolMap[i+1] = symbols[i];
     }
     this.givens = to_2D(_givens); // converts given 1d array into 2d array of board givens 
     this.solu = to_2D(_solutions); // 2d array of solution to game
@@ -106,14 +116,8 @@ function to_2D(inArray) { // takes in 1d array and converts to 2d, must pass cor
 }
 
 function mapColor(num){
-
     var color = colorMap[num];
-    return color;
-    
-  //  return red if given not using colors
-   // return black if given and using colors
-   // return color if using colors and not given
-    //return color;   
+    return color;//red = no color, black = given, color = maped color
 }
 //------------------------Button functions-----------------------------------
 
@@ -160,7 +164,7 @@ function toggle_boardType() { //Function to toggle Auto Sweep
     else if(board == '2')
         boardType = 'color';
     else
-        boardType = 'text';
+        boardType = 'symbol';
     game.canvas.reset();
     game = null;
     game = new gData("myCanvas", given_Puzzle, solution_Puzzle);

@@ -10,12 +10,12 @@ function setup_Cells(canvas, given, menu, cell_Array) { // creates and draws cel
 }
 
 function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canvas
-    //console.log(menu.user[index][jndex]);
+    var num = menu.user[index][jndex]
     var colorCell = null;
     var colorData = null;
     var data = null;
     if(getBoardType() === 'color'){
-        colorCell = getColorMap()[menu.user[index][jndex]];
+        colorCell = getColorMap()[num];
         colorData = colorCell;
         data = ' ';
         if (given[index][jndex]){ //if cell being added is a given
@@ -25,7 +25,10 @@ function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canv
     }else{
         colorData = 'black'; // not given, future proofing for adding color
         colorCell = '';
-        data = menu.user[index][jndex];
+        if(getBoardType() === 'symbol')
+            data = getSymbolMap()[num];//convert to symbol map
+        else
+            data = num;
         if (given[index][jndex]) //if cell being added is a given
             colorData = 'red'; // given color
     }
@@ -51,12 +54,11 @@ function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canv
         },
         font: "bold 40px sans-serif",
         text:data , // if this does not work. change the way it is passed
-        fill: colorData//mapColor(menu.user[index][jndex]) // red for given, black for user 
+        fill: colorData// red for given, black for user 
     });
     cell.addChild(cellText); // binds the cell and the text toeachother
     canvas.addChild(cell); // adds cell/text to canvas object
     cell.zIndex = 'back';
-    var num = null;
     cell.bind("mousedown", function () {
         num = menu.user[index][jndex];
         menu.active_Cell = cellText;
@@ -93,7 +95,7 @@ function clear_Cells(menu){ // clears cell colors
     for(var i = 0; i < menu.user.length; i++)
         for(var j = 0; j < menu.user.length; j++){
             if(getBoardType() === 'color'){
-                getGame().cell_Array[i][j].fill = getgetColorMap()()[menu.user[i][j]];
+                getGame().cell_Array[i][j].fill = getColorMap()[menu.user[i][j]];
             }
             else
                 getGame().cell_Array[i][j].fill = '';

@@ -99,8 +99,11 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
 
 function add_Menu(canvas, menu, index, jndex, x, y, i, j,color) { // disp menu numbers
     var boxColor = 'blue';
+    var num = (j * 3) + i + 1;
     if(getBoardType() === 'color')
-        boxColor = getColorMap()[(j * 3) + i + 1];
+        boxColor = getColorMap()[num];
+    if(getBoardType() === 'symbol')
+        num = getSymbolMap()[num];
     var menu_Cell = canvas.display.rectangle({
         x: x, //center of cell
         y: y,
@@ -120,7 +123,7 @@ function add_Menu(canvas, menu, index, jndex, x, y, i, j,color) { // disp menu n
             y: "center"
         },
         font: "bold 15px sans-serif",
-        text: (j * 3) + i + 1, // this took me way longer to figure out then it should
+        text: num,
         fill: color
     });
     menu.active_Cell.parent.fill = '';
@@ -128,9 +131,14 @@ function add_Menu(canvas, menu, index, jndex, x, y, i, j,color) { // disp menu n
     menu.obj.addChild(menu_Cell);
     menu_Cell.bind("click tap", function () { // click bind for small menu
         if(color === 'white'){
-            menu.active_Cell.text = this.text; //sets new value for cell
+            if(getBoardType() === 'symbol'){
+                menu.active_Cell.text = getSymbolMap()[this.text]; //sets new value for cell
+            }else{
+                menu.active_Cell.text = this.text; //sets new value for cell
+            }
             menu.user[index][jndex] = this.text; // edits user board for new value
         }
+        
         if(getBoardType() === 'color')
             menu.active_Cell.parent.fill = getColorMap()[menu.user[index][jndex]];
         menu.obj.remove(); // removes dummy+childrne menu from disp
