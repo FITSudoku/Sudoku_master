@@ -169,6 +169,3 @@ function toggle_boardType() { //Function to toggle Auto Sweep
     game = null;
     game = new gData("myCanvas", given_Puzzle, solution_Puzzle);
 }
-
-
-
