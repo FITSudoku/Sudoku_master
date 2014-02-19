@@ -25,7 +25,7 @@ function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canv
     }else{
         colorData = 'black'; // not given, future proofing for adding color
         colorCell = '';
-        if(getBoardType() === 'symbol')
+        if(getBoardType() === 'symbol'  || getBoardType() === 'letter')
             data = getSymbolMap()[num];//convert to symbol map
         else
             data = num;
