@@ -154,15 +154,21 @@ function toggle_highlight() { //Function to toggle Auto Sweep
     console.log("Highlight: "+game.highlight);
 }
 
-function toggle_boardType() { //Function to toggle Auto Sweep	
-    //   setup_Cells(game.canvas, game.given, game.menu, game.cell_Array)
+function toggle_boardType() { //Function to toggle Auto Sweep
+    var e = document.getElementById("boardType");
+    var board = e.options[e.selectedIndex].value;
+    console.log(board);
     var save = game.menu.user;
-    if(boardType === 'color')
+    if(board == '1')
         boardType = 'text';
-    else
+    else if(board == '2')
         boardType = 'color';
+    else
+        boardType = 'text';
     game.canvas.reset();
     game = null;
     game = new gData("myCanvas", given_Puzzle, solution_Puzzle);
 }
+
+
 
