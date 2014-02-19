@@ -36,8 +36,15 @@ function highlight(menu,num,game){
 function solver() { // solves the puzzle
     getGame().menu.user = to_2D(getGame().inSol); // Must recreate array because of object references
     for (var i = 0; i < getGame().menu.user.length; i++)
-        for (var j = 0; j < getGame().menu.user.length; j++)
-            getGame().cell_Array[i][j].children[0].text = getGame().menu.user[i][j]; // assignment works, data replace is bad
+        for (var j = 0; j < getGame().menu.user.length; j++){
+            var cell = getGame().cell_Array[i][j];
+            if( getBoardType() === 'letter' || getBoardType() === 'symbol'){
+                getGame().cell_Array[i][j].children[0].text = getSymbolMap()[getGame().menu.user[i][j]]; 
+            }else if(getBoardType() === 'color')
+                getGame().cell_Array[i][j].fill = getColorMap()[getGame().menu.user[i][j]];
+            else
+                getGame().cell_Array[i][j].children[0].text = getGame().menu.user[i][j];
+        }
     getGame().canvas.redraw();
     stopCount();
 }
