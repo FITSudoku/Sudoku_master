@@ -16,5 +16,14 @@
         $gender = get_post('gender');
         $education = get_post('education');
         $experience = get_post('experience');
+        $puzzleid = 1;
+        $timetaken = getCount();
+        
+        $query = "INSERT INTO results VALUES" . 
+            "('$puzzleid', '$age', '$timetaken', '$gender', '$education', '$experience')";
+        
+        if (!mysql_query($query, $db_server))
+            echo "INSERT failed: $query<br />" .
+            mysql_error() . "<br /><br />";
     }
 ?>
