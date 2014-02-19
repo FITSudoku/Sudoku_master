@@ -54,6 +54,9 @@ canvas{
 </head>
 <center>
 <body><div id="body"> 
+    <?php
+        echo 'Hello';
+    ?>
 <h1>Dev Project</h1>
 <br>
 <button type="General" onclick="start()">Start Game</button> 
@@ -78,6 +81,16 @@ canvas{
     <br>
     <form>Comments: <input Type"text" name = 'comment' </form>
     <button>Submit</button>
+    <br>
+    <br>
+    <div>
+    <form action="submit.php" method="post">
+    Age <input type="text" name="age"/>
+    Gender <input type="text" name="gender"/>
+    Education <input type="text" name="education"/>
+    Experience <input type="text" name="experience"/>
+    <input type="submit" value="Submit Data" />
+    </form></div>
 </div></body></center>
     
 </html>
