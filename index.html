@@ -60,15 +60,10 @@ canvas{
 <br>
 <br>
 <b>Time:</b>
-<clock id="timeOutput">
-
-</clock>
-<br>
-
-<br>
+<clock id="timeOutput"></clock>
+<br><br>
 <button type="General" onclick="toggle_autoSweep()">Auto Sweep</button>
 <button type="General" onclick="toggle_highlight() ">Highlight Regions</button>
-    
 <form>
 <select id="boardType" onchange="toggle_boardType(this)">
   <option value="1">Classic</option>
@@ -76,8 +71,6 @@ canvas{
   <option value="3">Symbols</option>
 </select>
 <form>
-    
-<button type="General" onclick="toggle_boardType()">Switch Board Type</button>
 
     <div class="wrapper">
 <canvas id="myCanvas" width="500" height="500" style="border:3px solid #000000"></canvas>
@@ -88,6 +81,5 @@ canvas{
     <br>
     <form>Comments: <input Type"text" name = 'comment' </form>
     <button>Submit</button>
-</div></body></center>
-    
+</div></body></center>   
 </html>

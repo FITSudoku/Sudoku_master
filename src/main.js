@@ -2,12 +2,12 @@
 /*global oCanvas, console, alert, stopCount, timedCount */ //used to hide erros
 var active = false;
 var given_Puzzle = [6, 7, ' ', 1, ' ', 5, ' ', ' ', 8, 1, 4, ' ', ' ', ' ', ' ', 6, 7, ' ', ' ', 8,
-                                        ' ', ' ', ' ', 2, 4, ' ', ' ', ' ', 6, 3, ' ', 7, ' ', ' ', 1, ' ', 9, ' ', ' ', ' ',
-                                        ' ', ' ', ' ', ' ', 3, ' ', 1, ' ', ' ', 9, ' ', 5, 2, ' ', ' ', ' ', 7, 2, ' ', ' ', ' ',
-                                        8, ' ', ' ', 2, 6, ' ', ' ', ' ', ' ', 3, 5, ' ', ' ', ' ', 4, ' ', 9, ' ', ' ', ' ']; // givens to start the game                                         
+                     ' ', ' ', ' ', 2, 4, ' ', ' ', ' ', 6, 3, ' ', 7, ' ', ' ', 1, ' ', 9, ' ', ' ', ' ',
+                     ' ', ' ', ' ', ' ', 3, ' ', 1, ' ', ' ', 9, ' ', 5, 2, ' ', ' ', ' ', 7, 2, ' ', ' ', ' ',
+                    8, ' ', ' ', 2, 6, ' ', ' ', ' ', ' ', 3, 5, ' ', ' ', ' ', 4, ' ', 9, ' ', ' ', ' ']; // givens to start the game                                         
 var solution_Puzzle = [6, 7, 2, 1, 4, 5, 3, 9, 8, 1, 4, 5, 9, 8, 3, 6, 7, 2, 3, 8, 9, 7, 6, 2, 4, 5, 1, 2, 6, 3, 5, 7, 4, 8,
-                                                1, 9, 9, 5, 8, 6, 2, 1, 7, 4, 3, 7, 1, 4, 3, 9, 8, 5, 2, 6, 5, 9, 7, 2, 3, 6, 1, 8, 4, 4, 2, 6, 8, 1,
-                                                7, 9, 3, 5, 8, 3, 1, 4, 5, 9, 2, 6, 7]; //An array of entries for the sample puzzle
+                        1, 9, 9, 5, 8, 6, 2, 1, 7, 4, 3, 7, 1, 4, 3, 9, 8, 5, 2, 6, 5, 9, 7, 2, 3, 6, 1, 8, 4, 4, 2, 6, 8, 1,
+                        7, 9, 3, 5, 8, 3, 1, 4, 5, 9, 2, 6, 7]; //An array of entries for the sample puzzle
 var game = null; // becuase button on html cant access non globals
 var colorMap = {};
 var boardType = 'text';
@@ -64,22 +64,18 @@ function Menu(canvas, user_Board) {
 
 
 function find_constraints (menu,column,row) { //Finds all constraints and returns a Boolean array representing the values that are valid for that cell.
-										//NOTE: the index for the array is shifted to match number values:  booleanArray[1] represents the number 1.
+								//NOTE: the index for the array is shifted to match number values:  booleanArray[1] represents the number 1.
 	var boolArray = [null,true,true,true,true,true,true,true,true,true];
-    //console.log(boolArray);
 	for(var y = 0; y < 3; y++) //Scan 3 by 3 box.  Algorithm by Alec.....
         for(var z = 0; z < 3; z++)
             if(menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)] != ' ') 
                 boolArray[menu.user[((Math.floor(column/3)*3)+y)][((Math.floor(row/3)*3)+z)]] = false;
-    //console.log(boolArray);    
 	for (var columnIdx = 0; columnIdx < 9; columnIdx++) //Scan column
         if(menu.user[columnIdx][row] != ' ') 
             boolArray[menu.user[columnIdx][row]] = false;
-    //console.log(boolArray);
 	for (var rowIdx = 0; rowIdx < 9; rowIdx++) //Scan Row
         if(menu.user[column][rowIdx] != ' ') 
             boolArray[menu.user[column][rowIdx]] = false;
-    //console.log(boolArray);
 	return (boolArray);	
 }
 //------------------------Data manipulation fucntions------------------------
