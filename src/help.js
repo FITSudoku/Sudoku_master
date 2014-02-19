@@ -37,7 +37,6 @@ function solver() { // solves the puzzle
     getGame().menu.user = to_2D(getGame().inSol); // Must recreate array because of object references
     for (var i = 0; i < getGame().menu.user.length; i++)
         for (var j = 0; j < getGame().menu.user.length; j++){
-            var cell = getGame().cell_Array[i][j];
             if( getBoardType() === 'letter' || getBoardType() === 'symbol'){
                 getGame().cell_Array[i][j].children[0].text = getSymbolMap()[getGame().menu.user[i][j]]; 
             }else if(getBoardType() === 'color')
