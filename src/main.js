@@ -38,7 +38,7 @@ function gData(cName, _givens, _solutions){// new type that holds all data about
     this.given = create_Bool_Array(_givens); // bool 2d array for checking if cell is a given
     this.inSol = _solutions;
     colorMap[' '] = '';
-    var colors = ["navy", "green", "orange", "grey", "red", "yellow", "indigo", "violet", "teal"];
+    var colors = ["blue", "green", "orange", "grey", "red", "yellow", "indigo", "violet", "teal"];
     for (var i = 0; i < 9; i++) {
         colorMap[i+1] = colors[i];
     }    
