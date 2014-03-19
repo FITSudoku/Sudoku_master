@@ -1,5 +1,4 @@
 <?php
-    require once 'login.php';
     $con = mysqli_connect("sudokuproject.mylha.com","edhjtylp_submit","SubmitData1!","edhjtylp_test");
    
     if (mysqli_connect_errno()) {
@@ -21,7 +20,7 @@
             mysqli_query($con, "INSERT INTO `Results`(`puzzleID`, `age`, `time taken`, `gender`, `education`, `experience`)
             VALUES('$puzzleid', '$age', '$timetaken', '$gender', '$education', '$experience');");
 
-            
+            mysqli_close($con);
         }
     }
 ?>
