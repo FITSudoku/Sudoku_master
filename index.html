@@ -10,7 +10,6 @@
 <script src="src/display.js"></script>
 <script src="src/hint.js"></script>
 <script src="src/cell.js"></script>
-
 <title>Sudoku Project</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
 <style type="text/css">
@@ -109,19 +108,46 @@ canvas{
 <clock id="timeOutput">
     
 </clock>
-<br><br>
-<button type="General" onclick="toggle_autoSweep()">Auto Sweep</button>
+<br>
+
+<br>
+<!--<button type="General" onclick="toggle_autoSweep()">Auto Sweep</button>
 <button type="General" onclick="toggle_highlight() ">Highlight Regions</button>
-<select id="boardType" onchange="toggle_boardType(this)">
-  <option value="1">Classic</option>
-  <option value="2">Color</option>  
-  <option value="3">Symbols</option>
-  <option value="4">Letters</option>
-</select>
-<div class="wrapper">
-<canvas id="myCanvas" width="500" height="500" style="border:3px solid #000000"></canvas>
-</div>
+<button type="General" onclick="toggle_boardType()">Switch Board Type</button>-->
+
     
+    
+<table style="width:450px">    
+<tr>
+    <td>
+        <b>Auto Sweep</b>
+        <div class="onoffswitch">
+        <input type="checkbox" onclick="toggle_autoSweep()" name="autoSweepToggle" class="onoffswitch-checkbox" id="myAutoSweepToggle" unchecked>
+        <label class="onoffswitch-label" for="myAutoSweepToggle">
+            <div class="onoffswitch-inner"></div>
+            <div class="onoffswitch-switch"></div>
+        </label>
+        </div>      
+    </td>
+    <td>
+        <b>Highlight</b>
+        <div class="onoffswitch">
+        <input type="checkbox" onclick="toggle_highlight()" name="highlightToggle" class="onoffswitch-checkbox" id="myHighlightToggle" unchecked>
+        <label class="onoffswitch-label" for="myHighlightToggle">
+            <div class="onoffswitch-inner"></div>
+            <div class="onoffswitch-switch"></div>
+        </label>
+        </div>    
+    </td>
+    <td>
+    <button type="General" onclick="toggle_boardType()">Switch Board Type</button>
+    </td>
+</tr>
+</table>
+
+<div class="wrapper">    
+    <canvas id="myCanvas" width="500" height="500" style="border:3px solid #000000"></canvas>
+</div>
 <br>
 <button type="General" onclick="solver()">Solve game</button>
 <button type="General" onclick="checker(true)">Check Game</button>
@@ -154,5 +180,4 @@ canvas{
     
 <br>
 </div></body></center>   
-
 </html>
