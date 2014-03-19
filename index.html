@@ -160,9 +160,20 @@ canvas{
     <div>
     <form action="submit.php" method="post">
     Age <input type="text" name="age"/>
-    Gender <input type="text" name="gender"/>
-    Education <input type="text" name="education"/>
-    Experience <input type="text" name="experience"/>
+    Gender <select name="gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="nontrad">Non-traditional</option>
+        </select>
+    Highest Level of Education Completed <select name="education">
+        <option value="primary">Primary School</option>
+        <option value="middle">Middle School</option>
+        <option value="high">High School</option>
+        <option value="bachelor">Bachelor's Degree</option>
+        <option value="master">Master's Degree+</option>
+        </select>
+        <br>
+    How long have you been doing Sudoku puzzles (in years)<input type="text" name="experience"/>
     <input type="submit" value="Submit Data" />
     </form></div>
 </div></body></center>
