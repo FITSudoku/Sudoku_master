@@ -48,21 +48,36 @@ function solver() { // solves the puzzle
     stopCount();
 }
 
-function checker() { // checks puzzle for correctness
+function checker(check_empty) { // checks puzzle for correctness
+    var g = getGame();
+    clear_Cells(g.menu)
+    var empty_Cell_Check = false;
+    var full_Board = false;
     var correct = true; // bool for quick breaking and message display
-    for (var i = 0; i < getGame().menu.user.length; i++)
-        for (var j = 0; j < getGame().menu.user.length; j++) {
-            if (getGame().solu[i][j] != getGame().menu.user[i][j] && checker) { // added checker for a little optomization 
-                alert("There appears to be a probelm with you solution!");
+    for (var i = 0; i < g.menu.user.length; i++){
+        for (var j = 0; j < g.menu.user.length; j++) {
+            if (g.menu.user[i][j] == ' ' && check_empty){
+                getGame().cell_Array[i][j].fill = 'yellow';
+                empty_Cell_Check = true;
+            }
+            if (g.solu[i][j] != g.menu.user[i][j] && g.menu.user[i][j] != ' ') { // added checker for a little optomization 
                 getGame().cell_Array[i][j].fill = 'red'; // Highlights incorrect cell
                 correct = false;
-                i = 99; // quick break
-                break;
             }
         }
-    if(correct){
+        full_Board = true;
+    }
+    if(correct && !empty_Cell_Check && check_empty){
         stopCount();
         alert("Congratulations, now give us your data!");
     }
+    if (empty_Cell_Check){
+        alert("Empty Cell\(s\) Found");
+    }
+    if(!correct){
+        alert("There appears to be a probelm with you solution!");
+    }
     getGame().canvas.redraw();
+    return correct;
+        
 }

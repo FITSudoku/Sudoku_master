@@ -22,6 +22,8 @@ function Draw_Line(canvas, xstart, ystart, xend, yend) { // draws single line of
 }
 
 function hover(canvas, menu, index, jndex) {
+    menu.hover_i = index;
+    menu.hover_j = jndex;
     if(getGame().given[index][jndex]){
       menu.mouse_Obj.moveTo(0,canvas.height);  
     }
@@ -46,6 +48,7 @@ function hover(canvas, menu, index, jndex) {
             opacity: 0.8,
             join: "cap"
         });
+        
         var xbox_Text = canvas.display.text({ // what goes into the cell
             x: -2, // use parent as child
             y: +2,
@@ -61,10 +64,12 @@ function hover(canvas, menu, index, jndex) {
         canvas.addChild(xBox);
         xBox.zIndex = 'front';
         menu.mouse_Obj = xBox;
+        
         xBox.bind("click tap", function () {
+            console.log("I:J",menu.hover_i,menu.hover_j);
             menu.hover_Cell.children[0].text = ' ';
-            menu.user[index][jndex] = ' ';
-            menu.constraints = find_constraints(menu,index, jndex);
+            getGame().menu.user[menu.hover_i][menu.hover_j] = ' ';
+            menu.constraints = find_constraints(menu,menu.hover_i, menu.hover_j);
             canvas.redraw(); // prevents removal lag
         });
     }
@@ -77,7 +82,8 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
     menu.obj = canvas.display.rectangle({// dummy object to hold 9 small objects to create menu
         x: menu.active_Cell.parent.abs_x,
         y: menu.active_Cell.parent.abs_y,
-    });   
+    }); 
+    
     for (var i = 0; i < 3; i++){
         for (var j = 0; j < 3; j++){
             var num = (j * 3) + i + 1;
@@ -91,6 +97,7 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
             add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j,color);
         }
     }
+    
     canvas.addChild(menu.obj); // disp dummy+children
     menu.check = true;        
     menu.obj.zIndex = 'front';

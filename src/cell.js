@@ -81,6 +81,7 @@ function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canv
     });
     if (!given[index][jndex]) { // black == user cell, red == given
         cell.bind("click", function () { // on click action
+            console.log("I:J",index,jndex);
             num = menu.user[index][jndex];
             clear_Cells(menu);
             menu.active_Cell = cellText;

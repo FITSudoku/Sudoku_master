@@ -43,21 +43,25 @@ function gData(cName, _givens, _solutions){// new type that holds all data about
     this.inGiven = _givens;
     this.given = create_Bool_Array(_givens); // bool 2d array for checking if cell is a given
     this.inSol = _solutions;
+    
     colorMap[' '] = '';
     var colors = ["darkgoldenrod", "green", "orange", "grey", "red", "yellow", "indigo", "violet", "teal"];
     for (var i = 0; i < 9; i++) {
         colorMap[i+1] = colors[i];
-    }    
+    }  
+    
     symbolMap[' '] = '';
     var symbols = ["\u25CE", "\u25BD", "\u25C8", "\u25A1", "\u25CC", "\u2042", "\u203B", "\u2623","\u262F"];
     for (var i = 0; i < 9; i++) {
         symbolMap[i+1] = symbols[i];
-    }    
+
+    } 
     letterMap[' '] = '';
     var letters = ["A", "B", "C", "D", "E", "F", "G", "H","I"];
     for (var i = 0; i < 9; i++) {
         letterMap[i+1] = letters[i];
     }
+    
     this.givens = to_2D(_givens); // converts given 1d array into 2d array of board givens 
     this.solu = to_2D(_solutions); // 2d array of solution to game
     this.canvas = oCanvas.create({ // ocanvas call to link html canvas 
@@ -66,6 +70,7 @@ function gData(cName, _givens, _solutions){// new type that holds all data about
     });
     this.cell_Array = [];
     this.menu = new Menu(this.canvas, to_2D(_givens));
+    
     setup_Cells(this.canvas, this.given, this.menu, this.cell_Array); // creates cell objects and fills them with givens
     Draw_Grids(this.canvas); // draws big grid lines
 }
@@ -75,6 +80,8 @@ function Menu(canvas, user_Board) {
     this.obj = null; // the object being disp
     this.active_Cell = null; // cellText menu is acting on
     this.hover_Cell = null;
+    this.hover_i = null;
+    this.hover_j = null;
     this.mouse_Obj = null; // xbox to clear active cell of data
     this.xBox_Check = false; // checks if xbox in top right of cell is present
     this.user = user_Board;
@@ -133,7 +140,6 @@ function mapColor(num){
 //------------------------Button functions-----------------------------------
 
 function start() {
-    
     if(active){ // if start button is pressed while game is running, run restart funtion
         alert("restarting");
         restart();
@@ -142,7 +148,6 @@ function start() {
         active = true;
         stopCount();    
         timedCount();
-
     }
 }
 
