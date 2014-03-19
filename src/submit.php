@@ -1,29 +1,27 @@
 <?php
     require once 'login.php';
-    $db_server = mysql_connect($db_hostname, $db_username, $db_password);
+    $con = mysqli_connect("sudokuproject.mylha.com","edhjtylp_submit","SubmitData1!","edhjtylp_test");
    
-    if (!$db_server) die("Unable to connect to MySQL: " . mysql_error());
-    
-    mysql_select_db($db_database, $db_server)
-        or die("Unable to select database: " . mysql_error());
+    if (mysqli_connect_errno()) {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        } else {
 
-    if (isset($_POST[age]) &&
-        isset($_POST[gender]) &&
-        isset($_POST[education]) &&
-        isset($_POST[experience])) 
-    {
-        $age = get_post('age');
-        $gender = get_post('gender');
-        $education = get_post('education');
-        $experience = get_post('experience');
-        $puzzleid = 1;
-        $timetaken = getCount();
-        
-        $query = "INSERT INTO results VALUES" . 
-            "('$puzzleid', '$age', '$timetaken', '$gender', '$education', '$experience')";
-        
-        if (!mysql_query($query, $db_server))
-            echo "INSERT failed: $query<br />" .
-            mysql_error() . "<br /><br />";
+        if (isset($_POST[age]) &&
+            isset($_POST[gender]) &&
+            isset($_POST[education]) &&
+            isset($_POST[experience])) 
+        {
+            $age = get_post('age');
+            $gender = get_post('gender');
+            $education = get_post('education');
+            $experience = get_post('experience');
+            $puzzleid = 1;
+            $timetaken = getCount();
+
+            mysqli_query($con, "INSERT INTO `Results`(`puzzleID`, `age`, `time taken`, `gender`, `education`, `experience`)
+            VALUES('$puzzleid', '$age', '$timetaken', '$gender', '$education', '$experience');");
+
+            
+        }
     }
 ?>
