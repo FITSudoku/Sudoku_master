@@ -84,7 +84,8 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
     menu.obj = canvas.display.rectangle({// dummy object to hold 9 small objects to create menu
         x: menu.active_Cell.parent.abs_x,
         y: menu.active_Cell.parent.abs_y,
-    });   
+    }); 
+    
     for (var i = 0; i < 3; i++){
         for (var j = 0; j < 3; j++){
             var num = (j * 3) + i + 1;
@@ -98,6 +99,7 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
             add_Menu(canvas, menu, index, jndex, (canvas.width / 27) * (i - 1), (canvas.width / 27) * (j - 1), i, j,color);
         }
     }
+    
     canvas.addChild(menu.obj); // disp dummy+children
     menu.check = true;        
     menu.obj.zIndex = 'front';
