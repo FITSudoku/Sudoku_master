@@ -66,11 +66,9 @@ function hover(canvas, menu, index, jndex) {
         menu.mouse_Obj = xBox;
         
         xBox.bind("click tap", function () {
-            console.log("before Cell Clear:",getGame().menu.user[menu.hover_i][menu.hover_j]);
             console.log("I:J",menu.hover_i,menu.hover_j);
             menu.hover_Cell.children[0].text = ' ';
             getGame().menu.user[menu.hover_i][menu.hover_j] = ' ';
-            console.log("After clear : ",getGame().menu.user[menu.hover_i][menu.hover_j]);
             menu.constraints = find_constraints(menu,menu.hover_i, menu.hover_j);
             canvas.redraw(); // prevents removal lag
         });

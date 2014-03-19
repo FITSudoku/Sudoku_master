@@ -48,7 +48,7 @@ function solver() { // solves the puzzle
     stopCount();
 }
 
-function checker() { // checks puzzle for correctness
+function checker(check_empty) { // checks puzzle for correctness
     var g = getGame();
     clear_Cells(g.menu)
     var empty_Cell_Check = false;
@@ -56,7 +56,7 @@ function checker() { // checks puzzle for correctness
     var correct = true; // bool for quick breaking and message display
     for (var i = 0; i < g.menu.user.length; i++){
         for (var j = 0; j < g.menu.user.length; j++) {
-            if (g.menu.user[i][j] == ' '){
+            if (g.menu.user[i][j] == ' ' && check_empty){
                 getGame().cell_Array[i][j].fill = 'yellow';
                 empty_Cell_Check = true;
             }
@@ -67,7 +67,7 @@ function checker() { // checks puzzle for correctness
         }
         full_Board = true;
     }
-    if(correct && !empty_Cell_Check){
+    if(correct && !empty_Cell_Check && check_empty){
         stopCount();
         alert("Congratulations, now give us your data!");
     }
@@ -78,4 +78,6 @@ function checker() { // checks puzzle for correctness
         alert("There appears to be a probelm with you solution!");
     }
     getGame().canvas.redraw();
+    return correct;
+        
 }
