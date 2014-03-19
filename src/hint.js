@@ -4,7 +4,7 @@ function hint(){
         if(!check_Columns())
             if(!check_Rows())
                 if(!check_Boxs())
-                    if(!row_Inspections())
+                    if(true)//!row_Inspections())
                         alert("no hint available try checking to see if all values are correct");
                         
 }
@@ -112,11 +112,56 @@ function check_Box(column,row){
  
 //checks cells row column and box for valud value, returns on first found
 function row_Inspections(){
+    for(var j = 0; j < getGame().menu.user.length; j++){ // check each row
+        var missing_values = get_Missing_Row_Values(j); // find missing values for row
+        for(var n = 0; n < missing_values.length; n++){ // cycle through array 
+            check_Columns_X(missing_values[n]); //check each array element if it is only one of kind in column
+        }
+    }
     return false;
 }
 
-function get_Missing_Row_Values(){
-    
-    
+//finds the numbers no currently in each row
+function get_Missing_Row_Values(row){
+    var missing_Values = [];
+    for(var n = 1; n <= 9; n++){
+        var found = false;
+        for(var j = 0; j < getGame().menu.user.length; j++){
+            if(getGame().menu.user[j][row] == n){
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            missing_Values.push(n)
+        }   
+    }
+    console.log("not found:"+missing_Values);
     return missing_Values;
+}
+
+function check_Columns_X(myVal){
+    var fits = 0;
+    var column = null;
+    for(var i = 0; i < getGame().menu.user.length; i++){ //check each column
+        if(check_Column_X(myVal,i)){//if n fits only one column then we know it must go there
+            column = i;
+            fits++;
+        }
+    }
+    if (fits > 1)
+        return 99;
+    return column;
+}
+
+function check_Column_X(myVal,i){
+    for(var j = 0; j < getGame().menu.user.length; j++){
+        if(getGame().menu.user[i][j] == myVal)
+            return false;
+    } 
+    return true;
+}
+
+function check_Box_X(){
+    return false;   
 }
