@@ -49,20 +49,30 @@ function solver() { // solves the puzzle
 }
 
 function checker() { // checks puzzle for correctness
+    var g = getGame();
+    var empty_Cell_Check = false;
     var correct = true; // bool for quick breaking and message display
-    for (var i = 0; i < getGame().menu.user.length; i++)
-        for (var j = 0; j < getGame().menu.user.length; j++) {
-            if (getGame().solu[i][j] != getGame().menu.user[i][j] && checker) { // added checker for a little optomization 
+    for (var i = 0; i < g.menu.user.length; i++)
+        for (var j = 0; j < g.menu.user.length; j++) {
+            if (g.menu.user[i][j] != ' '){
+                empty_Cell_Check = true;
+                console.log("empty cell found");
+            }
+            if (g.solu[i][j] != g.menu.user[i][j] && checker && g.menu.user[i][j] != ' ') { // added checker for a little optomization 
                 alert("There appears to be a probelm with you solution!");
                 getGame().cell_Array[i][j].fill = 'red'; // Highlights incorrect cell
+                console.log("cell value",g.menu.user[i][j]);
                 correct = false;
                 i = 99; // quick break
                 break;
             }
         }
-    if(correct){
+    if(correct && !empty_Cell_Check){
         stopCount();
         alert("Congratulations, now give us your data!");
+    }
+    else{
+        alert("Empty Cell\(s\) Found");
     }
     getGame().canvas.redraw();
 }
