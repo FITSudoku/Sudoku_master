@@ -140,7 +140,13 @@ canvas{
         </div>    
     </td>
     <td>
-    <button type="General" onclick="toggle_boardType()">Switch Board Type</button>
+    <select id="boardType" onchange="toggle_boardType(this)">
+        <option value="1">Classic</option>
+        <option value="2">Color</option>  
+        <option value="3">Symbols</option>
+        <option value="4">Letters</option>
+    </select>
+
     </td>
 </tr>
 </table>
