@@ -51,7 +51,7 @@ function gData(cName, _givens, _solutions){// new type that holds all data about
     }  
     
     symbolMap[' '] = '';
-    var symbols = ["\u25CE", "\u25BD", "\u25C8", "\u25A1", "\u25CC", "\u2042", "\u203B", "\u2623","\u262F"];
+    var symbols = ["\u25CE", "\u25BD", "\u25C8", "\u25A1", "\u25CC", "\u25AC", "\u25B0", "\u25D8","\u25BA"];
     for (var i = 0; i < 9; i++) {
         symbolMap[i+1] = symbols[i];
 
