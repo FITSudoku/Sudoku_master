@@ -4,7 +4,7 @@ function hint(){
         if(!check_Columns())
             if(!check_Rows())
                 if(!check_Boxs())
-                    if(true)//!row_Inspections())
+                    if(false)//!row_Inspections())
                         alert("no hint available try checking to see if all values are correct");
                         
 }
