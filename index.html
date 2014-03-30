@@ -140,13 +140,29 @@ canvas{
         </div>    
     </td>
     <td>
-    <select id="boardType" onchange="toggle_boardType(this)">
-        <option value="1">Classic</option>
-        <option value="2">Color</option>  
-        <option value="3">Symbols</option>
-        <option value="4">Letters</option>
-    </select>
-
+        <b>Board Type</b>
+        <div>
+        <select id="boardType" onchange="toggle_boardType(this)">
+            <option selected disabled>Choose one</option>
+            <option value="1">Classic(Default)</option>
+            <option value="2">Color</option>  
+            <option value="3">Symbols</option>
+            <option value="4">Letters</option>
+        </select>
+        <div>
+    </td>
+    <td>
+        <b>Puzzel Difficulty</b>
+        <div>
+        <select id="puzzelDifficulty" onchange="toggle_New_Board(this)">
+            <option selected disabled>Choose one</option>
+            <option value="1">Very Easy</option>
+            <option value="2">Easy</option>
+            <option value="3">Medium(Default)</option>  
+            <option value="4">Hard</option>
+            <option value="5">Very Hard</option>
+        </select>
+        <div>
     </td>
 </tr>
 </table>

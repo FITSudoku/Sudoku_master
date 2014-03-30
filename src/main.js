@@ -121,7 +121,7 @@ function to_2D(inArray) { // takes in 1d array and converts to 2d, must pass cor
     var array = [];
     var size = Math.sqrt(inArray.length); // gets square root of size input array
     if (size * size !== inArray.length) // checks to make sure the input array is of a correct size
-        console.log("Not valid array size");
+        console.log("Error: Not valid array size");
     else {
         var index = 0;
         for (var i = 0; i < size; i++) { // creates the 2d array
@@ -170,11 +170,12 @@ function toggle_highlight() { //Function to toggle Auto Sweep
     console.log("Highlight: "+game.highlight);
 }
 
-function toggle_boardType() { //Function to toggle Auto Sweep
+function toggle_boardType() { //Function to switch between board types (symbol, number, letter..
+    if(!confirmChoice("change board type?"))
+        return false;
     var e = document.getElementById("boardType");
     var board = e.options[e.selectedIndex].value;
     console.log(board);
-    var save = game.menu.user;
     if(board == '1')
         boardType = 'text';
     else if(board == '2')
@@ -183,7 +184,84 @@ function toggle_boardType() { //Function to toggle Auto Sweep
         boardType = 'letter'
     else
         boardType = 'symbol';
-    game.canvas.reset();
-    game = null;
-    game = new gData("myCanvas", given_Puzzle, solution_Puzzle);
+    
+    if(active){
+        game.canvas.reset();
+        game = null;
+        game = new gData("myCanvas", given_Puzzle, solution_Puzzle);
+    }
+    return true;
+}
+
+function toggle_New_Board(){
+    if(!confirmChoice("get a new puzzel?"))
+        return false;
+    
+    var e = document.getElementById("puzzelDifficulty");
+    var difficulty = e.options[e.selectedIndex].value;
+    console.log("Difficulty :"+difficulty);
+    
+    if(!getNewPuzzel(difficulty))
+        return false;;
+    if(active){
+        game.canvas.reset();
+        game = null;
+        game = new gData("myCanvas", given_Puzzle, solution_Puzzle);
+    }
+    return true;
+    
+}
+
+function getNewPuzzel(puzzel_Difficulity){
+    switch(puzzel_Difficulity){
+        case "1":
+            break;
+        case "2":
+            break;
+        case "3":
+            break;
+        case "4":
+            break;
+        case "5":
+            break;
+        default:
+            break;
+    }
+    //php stuff here
+    var newPuzzel = "123456789.........123456789.........123456789.........1.3.5.7.9.........123456789";
+    var newSolution = "123456789123456789123456789123456789123456789123456789123456789123456789123456789";
+    
+    var newPuzzelArr = parsePuzzelString(newPuzzel);
+    var newSolutionArr = parsePuzzelString(newSolution);
+    
+    if(newPuzzelArr.length != 81 ||
+       newSolutionArr.length != 81){
+        alert("There was an error reteriving a new puzzel:\nError: Incorrect size detected");
+        return false;
+    }
+    console.log(newPuzzelArr);
+    console.log(newSolutionArr)
+    given_Puzzle = newPuzzelArr;
+    solution_Puzzle = newSolutionArr;
+    console.log(given_Puzzle);
+    console.log(solution_Puzzle);
+              
+    return true;
+}
+              
+function parsePuzzelString(puzzel){
+    var parsed = puzzel.split('');
+    for (var i = 0; i < parsed.length; i++){
+        if(parsed[i] == '.')
+            parsed[i] = ' ';
+    }
+    return parsed;
+}
+
+function confirmChoice(msg){
+    msg = "Are you sure you want to "+msg+"\nYou will lose all progress!";
+    if(active && !(window.confirm(msg))){
+            return false;
+    }
+    return true;
 }
