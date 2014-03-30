@@ -59,10 +59,12 @@ function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canv
     cell.addChild(cellText); // binds the cell and the text toeachother
     canvas.addChild(cell); // adds cell/text to canvas object
     cell.zIndex = 'back';
-    cell.bind("mousedown", function () {
-        num = menu.user[index][jndex];
-        menu.active_Cell = cellText;
-    });
+    if (!given[index][jndex]) {
+        cell.bind("mousedown", function () {
+            num = menu.user[index][jndex];
+            menu.active_Cell = cellText;
+        });
+    }
     cell.bind("dblclick", function () {
         clear_Cells(menu);
         menu.user[index][jndex] = num;
