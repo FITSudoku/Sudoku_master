@@ -1,4 +1,5 @@
 <?php
+function submit() {
     $con = mysqli_connect("sudokuproject.mylha.com","edhjtylp_submit","SubmitData1!","edhjtylp_test");
    
     if (mysqli_connect_errno()) {
@@ -14,8 +15,8 @@
             $gender = get_post('gender');
             $education = get_post('education');
             $experience = get_post('experience');
-            $puzzleid = 1;
-            $timetaken = getCount();
+            $puzzleid = 3;
+            $timetaken = 22;
 
             mysqli_query($con, "INSERT INTO `Results`(`puzzleID`, `age`, `time taken`, `gender`, `education`, `experience`)
             VALUES('$puzzleid', '$age', '$timetaken', '$gender', '$education', '$experience');");
@@ -23,4 +24,5 @@
             mysqli_close($con);
         }
     }
+}
 ?>
