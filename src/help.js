@@ -1,6 +1,7 @@
 
 function highlight(menu,num,game){
-    getGame().canvas.removeChild(menu.obj);
+    if(menu.obj != null)
+        getGame().canvas.removeChild(menu.obj);
     console.log("hightlight:"+num);
     for(var i = 0; i < menu.user.length; i++){
         for(var j = 0; j < menu.user.length; j++){
@@ -24,12 +25,12 @@ function highlight(menu,num,game){
                         getGame().cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].zIndex = 'back';
                     }
                 }
+               getGame().cell_Array[i][j].stroke = "5px yellow";
+               getGame().cell_Array[i][j].zIndex = 'front'; 
             }
         }
         if(getGame().boardType === 'color')
             menu.active_Cell.parent.fill = getGame().colorMap[num];
-        menu.active_Cell.parent.stroke = "5px yellow";
-        menu.active_Cell.parent.zIndex = 'front';
     }
 }
 
