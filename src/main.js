@@ -263,4 +263,3 @@ function newGame(){
 function getData() {
     document.getElementById('timetaken').value = getCount();
 }
-}
