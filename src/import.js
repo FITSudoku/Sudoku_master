@@ -9,7 +9,7 @@ window.onload = function () {
            var reader = new FileReader();
            reader.onload = function (e) {
                var importType = reader.result.split("\n")[1].trim(); // gets difficulty of file input
-               console.log("Import Puzzel Type:"+importType);
+               console.log("Import Puzzle Type:"+importType);
                switch(importType){
                     case 'Very Easy':
                        alert("Uploading: Very Easy");
@@ -31,9 +31,9 @@ window.onload = function () {
                        alert("Invalid file!");
                        return;
                }
-               var allPuzzels = reader.result.replace(/[^(1-9)\.]/g,''); //remove +-|(whitespace)
-               allPuzzels = allPuzzels.match(/(\.|[1-9]){81}/g);
-               console.log(allPuzzels);
+               var allPuzzles = reader.result.replace(/[^(1-9)\.]/g,''); //remove +-|(whitespace)
+               allPuzzles = allPuzzles.match(/(\.|[1-9]){81}/g);
+               console.log(allPuzzles);
             };
            var t = reader.readAsText(file);
            //Reads the file in as a single string

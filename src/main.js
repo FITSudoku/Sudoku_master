@@ -184,14 +184,14 @@ function toggle_boardType() { //Function to switch between board types (symbol, 
 }
 
 function toggle_New_Board(){
-    if(!confirmChoice("get a new puzzel?"))
+    if(!confirmChoice("get a new puzzle?"))
         return false;
     
-    var e = document.getElementById("puzzelDifficulty");
+    var e = document.getElementById("puzzleDifficulty");
     var difficulty = e.options[e.selectedIndex].value;
     console.log("Difficulty :"+difficulty);
     
-    if(!getNewPuzzel(difficulty))
+    if(!getNewpuzzle(difficulty))
         return false;;
     if(active){
         newGame();
@@ -200,8 +200,8 @@ function toggle_New_Board(){
     
 }
 
-function getNewPuzzel(puzzel_Difficulity){
-    switch(puzzel_Difficulity){
+function getNewpuzzle(puzzle_Difficulity){
+    switch(puzzle_Difficulity){
         case "1":
             break;
         case "2":
@@ -216,25 +216,25 @@ function getNewPuzzel(puzzel_Difficulity){
             break;
     }
     //php stuff here
-    var newPuzzel = "123456789.........123456789.........123456789.........1.3.5.7.9.........123456789";
+    var newpuzzle = "123456789.........123456789.........123456789.........1.3.5.7.9.........123456789";
     var newSolution = "123456789123456789123456789123456789123456789123456789123456789123456789123456789";
     
-    var newPuzzelArr = parsePuzzelString(newPuzzel);
-    var newSolutionArr = parsePuzzelString(newSolution);
+    var newpuzzleArr = parsepuzzleString(newpuzzle);
+    var newSolutionArr = parsepuzzleString(newSolution);
     
-    if(newPuzzelArr.length != 81 ||
+    if(newpuzzleArr.length != 81 ||
        newSolutionArr.length != 81){
-        alert("There was an error retreiving a new puzzel:\nError: Incorrect size detected");
+        alert("There was an error retreiving a new puzzle:\nError: Incorrect size detected");
         return false;
     }
-    given_Puzzle = newPuzzelArr;
+    given_Puzzle = newpuzzleArr;
     solution_Puzzle = newSolutionArr;
               
     return true;
 }
               
-function parsePuzzelString(puzzel){
-    var parsed = puzzel.split('');
+function parsepuzzleString(puzzle){
+    var parsed = puzzle.split('');
     for (var i = 0; i < parsed.length; i++){
         if(parsed[i] == '.')
             parsed[i] = ' ';
