@@ -181,7 +181,7 @@ canvas{
     <br>
     <br>
     <div>
-    <form action='submit.php' method="post">
+    <form onsubmit="getData()" action='submit.php' method="post">
     Age <input type="text" name="age"/>
     Gender <select name="gender">
         <option value="male">Male</option>
@@ -197,6 +197,8 @@ canvas{
         </select>
         <br>
     How long have you been doing Sudoku puzzles (in years)<input type="text" name="experience"/>
+    <input type="hidden" name="time" id="timetaken" value=""/>
+    <input type="hidden" name="puzzid" id="puzzleid" value="9"/>
     <input type="submit" value="Submit Data" name="submit"/>
     </form></div>
     

@@ -224,7 +224,7 @@ function getNewPuzzel(puzzel_Difficulity){
     
     if(newPuzzelArr.length != 81 ||
        newSolutionArr.length != 81){
-        alert("There was an error reteriving a new puzzel:\nError: Incorrect size detected");
+        alert("There was an error retreiving a new puzzel:\nError: Incorrect size detected");
         return false;
     }
     given_Puzzle = newPuzzelArr;
@@ -258,4 +258,9 @@ function newGame(){
     active = true;
     stopCount();    
     timedCount();
+}
+
+function getData() {
+    document.getElementById('timetaken').value = getCount();
+}
 }
