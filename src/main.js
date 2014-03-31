@@ -140,25 +140,9 @@ function mapColor(num){
 //------------------------Button functions-----------------------------------
 
 function start() {
-    if(active){ // if start button is pressed while game is running, run restart funtion
+    if(active) // if start button is pressed while game is running, run restart funtion
         alert("restarting");
-        restart();
-    }else{
-        game = new gData("myCanvas", given_Puzzle, solution_Puzzle); // sets up game
-        active = true;
-        stopCount();    
-        timedCount();
-    }
-}
-
-function restart() { // puts original values in cells
-    game.menu.user = to_2D(game.inGiven); //has to recreate array because of obj pointers mess shit up
-    for (var i = 0; i < game.menu.user.length; i++)
-        for (var j = 0; j < game.menu.user.length; j++)
-            game.cell_Array[i][j].children[0].text = game.menu.user[i][j]; // assignment works, data replace is bad
-    game.canvas.redraw();
-    stopCount();       
-    timedCount();
+    newGame();
 }
 
 function toggle_autoSweep() { //Function to toggle Auto Sweep	
@@ -176,19 +160,25 @@ function toggle_boardType() { //Function to switch between board types (symbol, 
     var e = document.getElementById("boardType");
     var board = e.options[e.selectedIndex].value;
     console.log(board);
-    if(board == '1')
-        boardType = 'text';
-    else if(board == '2')
-        boardType = 'color';
-    else if(board == '4')
-        boardType = 'letter'
-    else
-        boardType = 'symbol';
-    
+    switch(board){
+        case '1':
+            boardType = 'text';
+            break;
+        case '2':
+            boardType = 'color';
+            break;
+        case '3':
+            boardType = 'symbol';
+            break;
+        case '4':
+            boardType = 'letter';
+            break;
+        default:
+            alert("Board type "+board+" is not a valid value");
+            break;
+    }
     if(active){
-        game.canvas.reset();
-        game = null;
-        game = new gData("myCanvas", given_Puzzle, solution_Puzzle);
+        newGame();
     }
     return true;
 }
@@ -204,9 +194,7 @@ function toggle_New_Board(){
     if(!getNewPuzzel(difficulty))
         return false;;
     if(active){
-        game.canvas.reset();
-        game = null;
-        game = new gData("myCanvas", given_Puzzle, solution_Puzzle);
+        newGame();
     }
     return true;
     
@@ -239,12 +227,8 @@ function getNewPuzzel(puzzel_Difficulity){
         alert("There was an error reteriving a new puzzel:\nError: Incorrect size detected");
         return false;
     }
-    console.log(newPuzzelArr);
-    console.log(newSolutionArr)
     given_Puzzle = newPuzzelArr;
     solution_Puzzle = newSolutionArr;
-    console.log(given_Puzzle);
-    console.log(solution_Puzzle);
               
     return true;
 }
@@ -264,4 +248,14 @@ function confirmChoice(msg){
             return false;
     }
     return true;
+}
+
+function newGame(){
+    if(active)
+        game.canvas.reset();
+    game = null;
+    game = new gData("myCanvas", given_Puzzle, solution_Puzzle);
+    active = true;
+    stopCount();    
+    timedCount();
 }

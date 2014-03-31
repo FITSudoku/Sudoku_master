@@ -6,7 +6,6 @@ function setup_Cells(canvas, given, menu, cell_Array) { // creates and draws cel
             cell_Array[i][j] = add_Cell(canvas, menu, i, j,given); //creates cell and menu elements and fills them with data 
         }
     }
-    console.log(menu.user);
 }
 
 function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canvas

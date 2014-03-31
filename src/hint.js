@@ -118,9 +118,6 @@ function row_Inspections(){
                 var row_Val = get_Missing_Row_Values(j); // find missing values for row
                 var col_Val = get_Missing_Column_Values(i); // find missing values for row
                 var box_Val = get_Missing_Box_Values(i,j); // find missing values for row
-                console.log("Row: "+row_Val);
-                console.log("Col: "+col_Val);
-                console.log("Box: "+box_Val);
                 var check = check_By_Inspection(row_Val,col_Val,box_Val);
                 if(check > 0){
                     var msg = "Check this cells Row, Column and Box for a clue...\n";
