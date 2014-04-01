@@ -265,4 +265,7 @@ function newGame(){
 
 function getData() {
     document.getElementById('timetaken').value = getCount();
+    document.getElementById('puzzleid').value = puzzid;
+    document.getElementById('puzztype').value = boardType;
+    document.getElementById('hintsOn').value = hintUsed;
 }

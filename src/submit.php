@@ -19,8 +19,8 @@ function submit() {
             $gender = $_POST['gender'];
             $education = $_POST['education'];
             $experience = $_POST['experience'];
-            $puzzleid = 5;
-            $timetaken = 22;
+            $puzzleid = $_POST['puzzid'];
+            $timetaken = $_POST['time'];
             
             mysqli_query($con, "INSERT INTO `Results`(`puzzleID`, `age`, `time taken`, `gender`, `education`, `experience`)
             VALUES('$puzzleid', '$age', '$timetaken', '$gender', '$education', '$experience');");
