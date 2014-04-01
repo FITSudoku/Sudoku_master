@@ -189,7 +189,7 @@ Import Puzzles
     <br>
     <br>
     <div>
-    <form onsubmit="getData()" action='submit.php' method="post">
+    <form action='submit.php' method="post">
     Age <input type="text" name="age"/>
     Gender <select name="gender">
         <option value="male">Male</option>
@@ -209,7 +209,7 @@ Import Puzzles
     <input type="hidden" name="puzzid" id="puzzleid" value=""/>
     <input type="hidden" name="type" id="puzztype" value=""/>
     <input type="hidden" name="hint" id="hintsOn" value=""/>
-    <input type="submit" value="Submit Data" name="submit"/>
+    <input type="submit" value="Submit Data" name="submit" id="submitButton" style="visibility: hidden;"/>
     </form></div>
     
 <br>

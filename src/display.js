@@ -152,4 +152,3 @@ function add_Menu(canvas, menu, index, jndex, x, y, i, j,color) { // disp menu n
         menu.check = false;
     });
 }
-
