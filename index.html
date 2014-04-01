@@ -11,6 +11,7 @@
 <script src="src/hint.js"></script>
 <script src="src/cell.js"></script>
 <script src="src/import.js"></script>
+<script src="lib/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
 <title>Sudoku Project</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
@@ -172,8 +173,9 @@ canvas{
 <button type="General" onclick="hint()">Give me a hint!</button>
 <br>
     Import Puzzles <input type="file" id="fileInput"><br>
-    <form onsubmit="getData()" action='upload.php' method="post">
-        <input type="submit" name="upload" value="Upload!" />
+    <form  action='upload.php' id ="uploadform" method="post">
+        <input type="hidden" id="upload" name="upload"/>
+        <button>Upload!</button>
     </form>
     <br><br>
     <div>
@@ -197,11 +199,7 @@ canvas{
     <input type="hidden" name="puzzid" id="puzzleid" value=""/>
     <input type="hidden" name="type" id="puzztype" value=""/>
     <input type="hidden" name="hint" id="hintsOn" value=""/>
-<<<<<<< HEAD
-    <input type="submit" name="submit" value="Submit Data" />
-=======
     <input type="submit" value="Submit Data" name="submit" id="submitButton" style="visibility: hidden;"/>
->>>>>>> cb9c4be3c968665bad8dadcff06c556515e67730
     </form></div>
     
 <br>
