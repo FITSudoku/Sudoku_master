@@ -13,6 +13,9 @@ var colorMap = {};
 var symbolMap = {};
 var letterMap = {};
 var boardType = 'text';
+var hintUsed = false;
+var puzzdiff = 0;
+var puzzid = 0;
 //-----------------------getters
 function getGame(){
     return game;   
