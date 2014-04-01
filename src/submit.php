@@ -1,5 +1,6 @@
 <html>
 <body>
+    <h1> Hi There!</h1>
 <?php
 function submit() {
     echo "Started submit";

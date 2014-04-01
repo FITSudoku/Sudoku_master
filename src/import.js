@@ -33,6 +33,7 @@ window.onload = function () {
                }
                var allPuzzles = reader.result.replace(/[^(1-9)\.]/g,''); //remove +-|(whitespace)
                allPuzzles = allPuzzles.match(/(\.|[1-9]){81}/g);
+               JSON.stringify(allPuzzles);
                console.log(allPuzzles);
             };
            var t = reader.readAsText(file);
