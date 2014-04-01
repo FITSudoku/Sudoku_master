@@ -71,6 +71,8 @@ function checker(check_empty) { // checks puzzle for correctness
     if(correct && !empty_Cell_Check && check_empty){
         stopCount();
         alert("Congratulations, now give us your data!");
+        document.getElementById('submitButton').style.visibility = "visible"; //Show submit button after solving puzzle
+        getData(); //Get data immediately after solving. Don't allow some variables to change before submission
     }
     if (empty_Cell_Check){
         alert("Empty Cell\(s\) Found");

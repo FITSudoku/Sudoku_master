@@ -177,7 +177,7 @@ canvas{
     </form>
     <br><br>
     <div>
-    <form onsubmit="getData()" action='submit.php' method="post">
+    <form action='submit.php' method="post">
     Age <input type="text" name="age"/>
     Gender <select name="gender">
         <option value="male">Male</option>
@@ -197,7 +197,11 @@ canvas{
     <input type="hidden" name="puzzid" id="puzzleid" value=""/>
     <input type="hidden" name="type" id="puzztype" value=""/>
     <input type="hidden" name="hint" id="hintsOn" value=""/>
+<<<<<<< HEAD
     <input type="submit" name="submit" value="Submit Data" />
+=======
+    <input type="submit" value="Submit Data" name="submit" id="submitButton" style="visibility: hidden;"/>
+>>>>>>> cb9c4be3c968665bad8dadcff06c556515e67730
     </form></div>
     
 <br>
