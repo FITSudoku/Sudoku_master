@@ -41,7 +41,7 @@ function upload() {
 }
 function goHome(&$data = null){
     if ($data != null){
-    mysqli_close($data);
+        mysqli_close($data);
     }
     header('Location: http://sudokuproject.mylha.com/index.html');
     exit();

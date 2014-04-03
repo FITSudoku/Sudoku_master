@@ -109,9 +109,7 @@ canvas{
 <button type="General" onclick="start()">Start Game</button> 
 <br><br>
 <b>Time:</b>
-<clock id="timeOutput">
-    
-</clock>
+<clock id="timeOutput"></clock>
 <br><br>  
 <table style="width:450px">    
 <tr>
@@ -152,11 +150,11 @@ canvas{
         <div>
         <select id="puzzleDifficulty" onchange="toggle_New_Board(this)">
             <option selected disabled>Choose one</option>
-            <option value="1">Very Easy</option>
-            <option value="2">Easy</option>
-            <option value="3">Medium(Default)</option>  
-            <option value="4">Hard</option>
-            <option value="5">Very Hard</option>
+            <option value="0">Very Easy</option>
+            <option value="1">Easy</option>
+            <option value="2">Medium(Default)</option>  
+            <option value="3">Hard</option>
+            <option value="4">Very Hard</option>
         </select>
         <div>
     </td>
@@ -202,6 +200,7 @@ canvas{
     <input type="hidden" name="puzzid" id="puzzleid" value=""/>
     <input type="hidden" name="type" id="puzztype" value=""/>
     <input type="hidden" name="hint" id="hintsOn" value=""/>
+    <input type="hidden" name="puzzle" id="puzzle" value=""/>
     <input type="submit" value="Submit Data" name="submit" id="submitButton" style="visibility: hidden;"/>
     </form></div>
     

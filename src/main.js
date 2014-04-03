@@ -195,7 +195,7 @@ function toggle_New_Board(){
     console.log("Difficulty :"+difficulty);
     
     if(!getNewpuzzle(difficulty))
-        return false;;
+        return false;
     if(active){
         newGame();
     }
@@ -204,24 +204,17 @@ function toggle_New_Board(){
 }
 
 function getNewpuzzle(puzzle_Difficulity){
-    switch(puzzle_Difficulity){
-        case "1":
-            break;
-        case "2":
-            break;
-        case "3":
-            break;
-        case "4":
-            break;
-        case "5":
-            break;
-        default:
-            break;
+    if(grabData(puzzle_Difficulity)){
+        return false;
     }
-    //php stuff here
+    if (confirmChoice("get a new puzzle?")){
+        return false;
+    }
+    
     var newpuzzle = "123456789.........123456789.........123456789.........1.3.5.7.9.........123456789";
     var newSolution = "123456789123456789123456789123456789123456789123456789123456789123456789123456789";
-    
+    newpuzzle = dbGivens; //freaking magic man;
+    newSolution = dbSolution;
     var newpuzzleArr = parsepuzzleString(newpuzzle);
     var newSolutionArr = parsepuzzleString(newSolution);
     
@@ -230,6 +223,8 @@ function getNewpuzzle(puzzle_Difficulity){
         alert("There was an error retreiving a new puzzle:\nError: Incorrect size detected");
         return false;
     }
+    puzzid = dbID; // after confirmation set globals
+    puzzdiff = dbDiff;
     given_Puzzle = newpuzzleArr;
     solution_Puzzle = newSolutionArr;
               
@@ -248,7 +243,7 @@ function parsepuzzleString(puzzle){
 function confirmChoice(msg){
     msg = "Are you sure you want to "+msg+"\nYou will lose all progress!";
     if(active && !(window.confirm(msg))){
-            return false;
+        return false;
     }
     return true;
 }
@@ -268,4 +263,20 @@ function getData() {
     document.getElementById('puzzleid').value = puzzid;
     document.getElementById('puzztype').value = boardType;
     document.getElementById('hintsOn').value = hintUsed;
+}
+
+function grabPuzzle_Difficulity(puzzle_Diff){
+    if (0 > puzzle_Diff || puzzle_Diff > 4){
+        return false;
+    }
+    
+    var httpReq = new XMLHttpRequest();
+    httpReq.onreadystatechange = function(){    
+        if (xmlhttp.readyState==4 && xmlhttp.status==200){
+            document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+        } // not sure if needed
+    }
+    httpReq.open("GET","getPuzzle.php?p="+puzzle_Diff,true);
+    httpReq.send();
+    return true;
 }
