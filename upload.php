@@ -9,35 +9,52 @@ ini_set('display_errors', '1');
 <?php
 function upload() {
     echo "Started submit<br>";
+    
     $con = mysqli_connect("sudokuproject.mylha.com","edhjtylp_submit","SubmitData1!","edhjtylp_test");
-    echo "Tried connection<br>";
-    
-    $data=json_decode($_POST['upload']);
-    
-    foreach($data as $value){
-        echo "$value <br>";
-    }
     if (mysqli_connect_errno()) {
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
-    } else if (false) {
-        echo "<br>Didn't fail connection<br>";
-        if (false) 
-        {
-            mysqli_query($con, "INSERT INTO `Results`(`puzzleID`, `age`, `time taken`, `gender`, `education`, `experience`)
-            VALUES('$puzzleid', '$age', '$timetaken', '$gender', '$education', '$experience');");
-            mysqli_close($con);
-            header('Location: http://sudokuproject.mylha.com/index.html');
-            exit();
-        } else {
-            echo "Could not find all data";
-        }
-    }
-}
+        goHome($con);
+    } //check connection status
+    echo "Connected<br>";
+    
+    $data=json_decode($_POST['upload']); // get data
+    $rate=json_decode($_POST['diffRating']);
+    if (!isset($_POST['upload']) ||
+            !isset($_POST['diffRating'])){
+        echo "Upload Data Error<br>";
+        goHome($con);
+    } //check data passed in
+    echo "Data Good<br>";
 
-if(true)
-{
-   upload();
+    foreach($data as $value){
+        echo "$value <br>";
+    } // print data
+    
+    for($i=0;$i<count($data);$i++){
+        uploadData(&$con,$rate,$data[$i],$data[$i+1]);
+        $i++;
+    } //upload data
+    
+    echo "Data uploaded!";
+    goHome($con);    
+     
 }
+function goHome(&$data = null){
+    if ($data != null){
+    mysqli_close($data);
+    }
+    header('Location: http://sudokuproject.mylha.com/index.html');
+    exit();
+} // go back to home page
+
+function uploadData(&$con,$diff,$puz,$sol){
+    mysqli_query($con, "INSERT INTO `PuzzlesAuto`(`difficulty`, `givens`, `solution`)
+        VALUES ('$diff','$puz',$sol);");
+} // upload puzzles to database
+
+if(true){
+   upload();
+} //calls main method on start
 ?>
 </body>
 </html>

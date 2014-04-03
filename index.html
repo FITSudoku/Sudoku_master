@@ -10,7 +10,7 @@
 <script src="src/display.js"></script>
 <script src="src/hint.js"></script>
 <script src="src/cell.js"></script>
-<script src="src/import.js"></script>
+<!script src="src/import.js"><!/script>
 <script src="lib/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
 <title>Sudoku Project</title>
@@ -172,11 +172,14 @@ canvas{
 <button type="General" onclick="newGame()">Restart</button>
 <button type="General" onclick="hint()">Give me a hint!</button>
 <br>
+        <!--
     Import Puzzles <input type="file" id="fileInput"><br>
     <form  action='upload.php' id ="uploadform" method="post">
         <input type="hidden" id="upload" name="upload"/>
+        <input type="hidden" id="diffRating" name="diffRating"/>
         <button>Upload!</button>
     </form>
+-->
     <br><br>
     <div>
     <form action='submit.php' method="post">
