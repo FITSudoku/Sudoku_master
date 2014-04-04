@@ -30,11 +30,11 @@ function getColorMap(){
 
 function getSymbolMap(){
     if(getBoardType() === 'letter'){
-        console.log("in letter");
         return letterMap;
     }
-    else
+    else{
         return symbolMap;
+    }
 }
 
 function getBoardType(){
