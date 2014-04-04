@@ -1,38 +1,43 @@
-
-function highlight(menu,num,game){
+function highlight(menu,num){
     hintUsed = true;
-    if(menu.obj != null)
+    if(menu.obj != null){
         getGame().canvas.removeChild(menu.obj);
+    }
     console.log("hightlight:"+num);
     for(var i = 0; i < menu.user.length; i++){
         for(var j = 0; j < menu.user.length; j++){
             if(getGame().given[i][j]){
                 getGame().cell_Array[i][j].fill = 'blue';
                 getGame().cell_Array[i][j].zIndex = 'back';
-            }
-                
+            } //highlight all givens   
             if((menu.user[i][j] == num )){
                 for(var x = 0; x < menu.user.length; x++){
                     getGame().cell_Array[x][j].fill = 'blue';
                     getGame().cell_Array[x][j].zIndex = 'back';
                     getGame().cell_Array[i][x].fill = 'blue';
                     getGame().cell_Array[i][x].zIndex = 'back';
-                }
-                var count = 0;
+                } // highlight row and coloum
                 for(var y = 0; y < 3; y++) {
                     for(var z = 0; z < 3; z++){
-                        count++;
                         getGame().cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].fill = 'blue';
                         getGame().cell_Array[((Math.floor(i/3)*3)+y)][((Math.floor(j/3)*3)+z)].zIndex = 'back';
                     }
-                }
-               getGame().cell_Array[i][j].stroke = "5px yellow";
-               getGame().cell_Array[i][j].zIndex = 'front'; 
-            }
+                } //highlight box
+            } //highlight row/column/box of matchs
         }
-        if(getGame().boardType === 'color')
-            menu.active_Cell.parent.fill = getGame().colorMap[num];
-    }
+    } // find highlight
+    for(var i = 0; i < menu.user.length; i++){
+        for(var j = 0; j < menu.user.length; j++){         
+            if((menu.user[i][j] == num )){
+                getGame().cell_Array[i][j].stroke = "5px yellow";
+                getGame().cell_Array[i][j].zIndex = 'front';
+                if(getBoardType() == 'color'){
+                    getGame().cell_Array[i][j].fill = getColorMap()[num];
+                }//if cell matches
+            } 
+        }
+    } // find matches
+    getGame().canvas.redraw();
 }
 
 function solver() { // solves the puzzle

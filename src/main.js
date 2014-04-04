@@ -161,13 +161,13 @@ function start() {
 function toggle_autoSweep() { //Function to toggle Auto Sweep	
     hintUsed = true;
     auto = !auto;
-    game.autoSweep = !game.autoSweep; // cleaner toggle then if statment 
+    game.autoSweep = !game.autoSweep; 
 }
 
-function toggle_highlight() { //Function to toggle Auto Sweep	
-    game.highlight = !game.highlight; // cleaner toggle then if statment
+function toggle_highlight() { //Function to toggle Auto Sweep
     hintUsed = true;
     high = !high;
+    game.highlight = !game.highlight;  
 }
 
 function toggle_boardType() { //Function to switch between board types (symbol, number, letter..
