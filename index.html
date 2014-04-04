@@ -107,9 +107,10 @@ canvas{
 <body><div id="body"> 
 <h1>Sudoku Project</h1>
 <button type="General" onclick="start()">Start Game</button> 
-<br><br>
 <b>Time:</b>
-<clock id="timeOutput"></clock>
+<clock id="timeOutput">
+    
+    </clock>
 <br><br>  
 <table style="width:450px">    
 <tr>
@@ -148,13 +149,13 @@ canvas{
     <td>
         <b>Puzzle Difficulty</b>
         <div>
-        <select id="puzzleDifficulty" onchange="toggle_New_Board(this)">
+        <select id="puzzleDifficulty" onchange="getNewpuzzle()">
             <option selected disabled>Choose one</option>
-            <option value="0">Very Easy</option>
-            <option value="1">Easy</option>
-            <option value="2">Medium(Default)</option>  
-            <option value="3">Hard</option>
-            <option value="4">Very Hard</option>
+            <option value=0>Very Easy</option>
+            <option value=1>Easy</option>
+            <option value=2>Medium(Default)</option>  
+            <option value=3>Hard</option>
+            <option value=4>Very Hard</option>
         </select>
         <div>
     </td>

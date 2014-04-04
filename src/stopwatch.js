@@ -6,8 +6,8 @@ function stopCount() {
 	c = 0;
 }
 function timedCount() {	
-	document.getElementById('timeOutput').firstChild.data =c;
-	c=c+1;
+    c=c+1;
+	document.getElementById('timeOutput').firstChild.data = c;
 	t=setTimeout("timedCount()",1000);
 }
 function getCount() {

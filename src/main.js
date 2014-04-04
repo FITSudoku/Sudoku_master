@@ -16,6 +16,7 @@ var boardType = 'text';
 var hintUsed = false;
 var puzzdiff = 0;
 var puzzid = 0;
+var jsonObj = null;
 //-----------------------getters
 function getGame(){
     return game;   
@@ -186,48 +187,38 @@ function toggle_boardType() { //Function to switch between board types (symbol, 
     return true;
 }
 
-function toggle_New_Board(){
-    if(!confirmChoice("get a new puzzle?"))
-        return false;
-    
+function getNewpuzzle(){
     var e = document.getElementById("puzzleDifficulty");
-    var difficulty = e.options[e.selectedIndex].value;
-    console.log("Difficulty :"+difficulty);
-    
-    if(!getNewpuzzle(difficulty))
-        return false;
-    if(active){
-        newGame();
-    }
-    return true;
-    
-}
-
-function getNewpuzzle(puzzle_Difficulity){
-    if(grabData(puzzle_Difficulity)){
+    var diffChoice = e.options[e.selectedIndex].value;
+    if(!grabPuzzle(diffChoice)){
         return false;
     }
-    if (confirmChoice("get a new puzzle?")){
+    if (!confirmChoice("get a new puzzle?")){
         return false;
     }
-    
-    var newpuzzle = "123456789.........123456789.........123456789.........1.3.5.7.9.........123456789";
-    var newSolution = "123456789123456789123456789123456789123456789123456789123456789123456789123456789";
-    newpuzzle = dbGivens; //freaking magic man;
-    newSolution = dbSolution;
-    var newpuzzleArr = parsepuzzleString(newpuzzle);
-    var newSolutionArr = parsepuzzleString(newSolution);
+    if(jsonObj == null){
+        alert("Data request Failed!");
+        return false;
+    }
+    var newpuzzle = jsonObj.givens; //freaking magic man;
+    var newSolution = jsonObj.solution;
+    var newpuzzleArr = parsepuzzleString(newpuzzle.toString());
+    var newSolutionArr = parsepuzzleString(newSolution.toString());
     
     if(newpuzzleArr.length != 81 ||
        newSolutionArr.length != 81){
         alert("There was an error retreiving a new puzzle:\nError: Incorrect size detected");
         return false;
     }
-    puzzid = dbID; // after confirmation set globals
-    puzzdiff = dbDiff;
+    console.log("success!, NEW PUZZLE LOADED FROM DATABASE");
+    puzzid = jsonObj.puzzleID; // after confirmation set globals
+    puzzdiff = jsonObj.difficulty;
+    jsonObj = null;
     given_Puzzle = newpuzzleArr;
     solution_Puzzle = newSolutionArr;
-              
+    if(active){
+        newGame();
+    }
     return true;
 }
               
@@ -265,18 +256,20 @@ function getData() {
     document.getElementById('hintsOn').value = hintUsed;
 }
 
-function grabPuzzle_Difficulity(puzzle_Diff){
+function grabPuzzle(puzzle_Diff){
+    console.log("requesting deff: "+puzzle_Diff);
     if (0 > puzzle_Diff || puzzle_Diff > 4){
+        alert("Invalid puzzle diff requested");
         return false;
-    }
-    
-    var httpReq = new XMLHttpRequest();
-    httpReq.onreadystatechange = function(){    
-        if (xmlhttp.readyState==4 && xmlhttp.status==200){
-            document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
-        } // not sure if needed
-    }
-    httpReq.open("GET","getPuzzle.php?p="+puzzle_Diff,true);
-    httpReq.send();
-    return true;
+    } 
+    $.ajax({
+        url: "getPuzzle.php?p="+puzzle_Diff,
+        type:"GET",
+        async: false,
+        dataType: "json",
+        success: function(response) {
+            jsonObj = response;;
+        }
+    });
+   return true;
 }
