@@ -1,5 +1,6 @@
 function hint(){
     clear_Cells(getGame().menu);
+    hintUsed = true;
     if(checker(false)) // if not all cells correct, dont give hint. false means ignore empty cells
         if(!check_Columns())
             if(!check_Rows())

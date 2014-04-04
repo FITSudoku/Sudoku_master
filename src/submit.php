@@ -22,9 +22,12 @@ function submit() {
             $experience = $_POST['experience'];
             $puzzleid = $_POST['puzzid'];
             $timetaken = $_POST['time'];
+            $puzzletype = $_POST['type'];
+            $hints = filter_var ($_POST['hint'], FILTER_VALIDATE_BOOLEAN);
+            $diff = $_POST['puzzleDiff'];
             
-            mysqli_query($con, "INSERT INTO `Results`(`puzzleID`, `age`, `time taken`, `gender`, `education`, `experience`)
-            VALUES('$puzzleid', '$age', '$timetaken', '$gender', '$education', '$experience');");
+            mysqli_query($con, "INSERT INTO `Results`(`puzzleID`, `age`, `time taken`, `gender`, `education`, `experience`, `puzzleType`, `difficulty`, `hint`)
+            VALUES('$puzzleid', '$age', '$timetaken', '$gender', '$education', '$experience', '$puzzletype', '$diff', '$hints');");
 
             mysqli_close($con);
             header('Location: http://sudokuproject.mylha.com/index.html');

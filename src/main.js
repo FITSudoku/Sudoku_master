@@ -150,11 +150,13 @@ function start() {
 }
 
 function toggle_autoSweep() { //Function to toggle Auto Sweep	
+    hintUsed = true;
     game.autoSweep = !game.autoSweep; // cleaner toggle then if statment 
 }
 
 function toggle_highlight() { //Function to toggle Auto Sweep	
     game.highlight = !game.highlight; // cleaner toggle then if statment
+    hintUsed = true;
     console.log("Highlight: "+game.highlight);
 }
 
@@ -243,6 +245,7 @@ function newGame(){
     if(active)
         game.canvas.reset();
     game = null;
+    hintUsed = false;
     game = new gData("myCanvas", given_Puzzle, solution_Puzzle);
     active = true;
     stopCount();    
@@ -254,6 +257,7 @@ function getData() {
     document.getElementById('puzzleid').value = puzzid;
     document.getElementById('puzztype').value = boardType;
     document.getElementById('hintsOn').value = hintUsed;
+    document.getElementById('difficulty').value = puzzdiff;
 }
 
 function grabPuzzle(puzzle_Diff){
