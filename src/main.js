@@ -144,8 +144,15 @@ function mapColor(num){
 //------------------------Button functions-----------------------------------
 
 function start() {
-    if(active) // if start button is pressed while game is running, run restart funtion
-        alert("restarting");
+    if(!confirmChoice("start a new game?")){ // if start button is pressed while game is running, run restart funtion
+        return;
+    }
+    try{
+        if(!active)
+            getNewpuzzle(1); //so local games will still work
+    }catch(err){
+        alert("Failed retreiving data!\nUsing local game board");
+    }
     newGame();
 }
 
@@ -189,9 +196,14 @@ function toggle_boardType() { //Function to switch between board types (symbol, 
     return true;
 }
 
-function getNewpuzzle(){
-    var e = document.getElementById("puzzleDifficulty");
-    var diffChoice = e.options[e.selectedIndex].value;
+function getNewpuzzle(passedDiff){
+    var diffChoice = 0;
+    if(0 < passedDiff && passedDiff < 5){
+        diffChoice = passedDiff;
+    }else{
+        var e = document.getElementById("puzzleDifficulty");
+        diffChoice = e.options[e.selectedIndex].value;
+    }
     if(!grabPuzzle(diffChoice)){
         return false;
     }
@@ -248,11 +260,12 @@ function newGame(){
     hintUsed = false;
     game = new gData("myCanvas", given_Puzzle, solution_Puzzle);
     active = true;
-    stopCount();    
+    resetCount();    
     timedCount();
 }
 
 function getData() {
+    console.log("Time:"+getCount());
     document.getElementById('timetaken').value = getCount();
     document.getElementById('puzzleid').value = puzzid;
     document.getElementById('puzztype').value = boardType;

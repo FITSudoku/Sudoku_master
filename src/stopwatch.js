@@ -3,11 +3,13 @@ var c=0;
 var t = null;
 function stopCount() {
 	clearTimeout(t);
-	c = 0;
+}
+function resetCount(){
+    c = 0;
 }
 function timedCount() {	
-    c=c+1;
 	document.getElementById('timeOutput').firstChild.data = c;
+    c=c+1;
 	t=setTimeout("timedCount()",1000);
 }
 function getCount() {

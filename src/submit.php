@@ -26,13 +26,19 @@ function submit() {
             $hints = filter_var ($_POST['hint'], FILTER_VALIDATE_BOOLEAN);
             $diff = $_POST['puzzleDiff'];
             
-            mysqli_query($con, "INSERT INTO `Results`(`puzzleID`, `age`, `time taken`, `gender`, `education`, `experience`, `puzzleType`, `difficulty`, `hint`)
+            error_log("time:".$timetaken);
+            $result = mysqli_query($con, "INSERT INTO `Results`(`puzzleID`, `age`, `time taken`, `gender`, `education`, `experience`, `puzzleType`, `difficulty`, `hint`)
             VALUES('$puzzleid', '$age', '$timetaken', '$gender', '$education', '$experience', '$puzzletype', '$diff', '$hints');");
-
+            if($result){
+                error_log("Insert worked");
+            }else{
+                error_log("Insert Failed");
+            }
             mysqli_close($con);
             header('Location: http://sudokuproject.mylha.com/index.html');
             exit();
         } else {
+            error_log("SomeData not present");
             echo "Could not find all data";
         }
     }

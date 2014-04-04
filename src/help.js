@@ -1,5 +1,6 @@
 
 function highlight(menu,num,game){
+    hintUsed = true;
     if(menu.obj != null)
         getGame().canvas.removeChild(menu.obj);
     console.log("hightlight:"+num);
@@ -35,6 +36,7 @@ function highlight(menu,num,game){
 }
 
 function solver() { // solves the puzzle
+    hintUsed = true;
     getGame().menu.user = to_2D(getGame().inSol); // Must recreate array because of object references
     for (var i = 0; i < getGame().menu.user.length; i++)
         for (var j = 0; j < getGame().menu.user.length; j++){
@@ -46,7 +48,6 @@ function solver() { // solves the puzzle
                 getGame().cell_Array[i][j].children[0].text = getGame().menu.user[i][j];
         }
     getGame().canvas.redraw();
-    stopCount();
 }
 
 function checker(check_empty) { // checks puzzle for correctness
@@ -69,10 +70,10 @@ function checker(check_empty) { // checks puzzle for correctness
         full_Board = true;
     }
     if(correct && !empty_Cell_Check && check_empty){
+        getData(); //Get data immediately after solving. Don't allow some variables to change before submission
         stopCount();
         alert("Congratulations, now give us your data!");
         document.getElementById('submitButton').style.visibility = "visible"; //Show submit button after solving puzzle
-        getData(); //Get data immediately after solving. Don't allow some variables to change before submission
     }
     if (empty_Cell_Check){
         alert("Empty Cell\(s\) Found");
