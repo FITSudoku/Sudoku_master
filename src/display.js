@@ -68,6 +68,7 @@ function hover(canvas, menu, index, jndex) {
         xBox.bind("click tap", function () {
             console.log("I:J",menu.hover_i,menu.hover_j);
             menu.hover_Cell.children[0].text = ' ';
+            menu.hover_Cell.fill = 'white';
             getGame().menu.user[menu.hover_i][menu.hover_j] = ' ';
             menu.constraints = find_constraints(menu,menu.hover_i, menu.hover_j);
             canvas.redraw(); // prevents removal lag

@@ -17,6 +17,8 @@ var hintUsed = false;
 var puzzdiff = 0;
 var puzzid = 0;
 var jsonObj = null;
+var auto = false;
+var high = false;
 //-----------------------getters
 function getGame(){
     return game;   
@@ -42,8 +44,8 @@ function getBoardType(){
 //-------------------------Types and initialization
 
 function gData(cName, _givens, _solutions){// new type that holds all data about the game	
-    this.autoSweep = false;
-    this.highlight = false;
+    this.autoSweep = auto;
+    this.highlight = high;
     this.inGiven = _givens;
     this.given = create_Bool_Array(_givens); // bool 2d array for checking if cell is a given
     this.inSol = _solutions;
@@ -158,13 +160,14 @@ function start() {
 
 function toggle_autoSweep() { //Function to toggle Auto Sweep	
     hintUsed = true;
+    auto = !auto;
     game.autoSweep = !game.autoSweep; // cleaner toggle then if statment 
 }
 
 function toggle_highlight() { //Function to toggle Auto Sweep	
     game.highlight = !game.highlight; // cleaner toggle then if statment
     hintUsed = true;
-    console.log("Highlight: "+game.highlight);
+    high = !high;
 }
 
 function toggle_boardType() { //Function to switch between board types (symbol, number, letter..
