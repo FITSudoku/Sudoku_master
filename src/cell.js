@@ -72,7 +72,7 @@ function add_Cell(canvas, menu, index, jndex,given) { // add cell object to canv
             return;
         } // do nothing if highligh not on
         clear_Cells(menu); //clears color fills on cells
-       // menu.user[index][jndex] = num; // put orignal number back       not sure if needed..
+        menu.user[index][jndex] = num; // put orignal number back after menu click replaces it
         if(getBoardType() === 'color' && given[index][jndex]){
             num = '*';
         }
