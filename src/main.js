@@ -263,6 +263,7 @@ function newGame(){
     hintUsed = false;
     game = new gData("myCanvas", given_Puzzle, solution_Puzzle);
     active = true;
+    stopCount();
     resetCount();    
     timedCount();
 }
