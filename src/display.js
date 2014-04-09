@@ -108,8 +108,10 @@ function setup_Menu(canvas, menu, index, jndex) { // change to small cells only
 function add_Menu(canvas, menu, index, jndex, x, y, i, j,color) { // disp menu numbers
     var boxColor = 'blue';
     var num = (j * 3) + i + 1;
-    if(getBoardType() === 'color')
+    if(getBoardType() === 'color'){
         boxColor = getColorMap()[num];
+        num = "*";
+    }
     if(getBoardType() === 'symbol' || getBoardType() === 'letter')
         num = getSymbolMap()[num];
     var menu_Cell = canvas.display.rectangle({
