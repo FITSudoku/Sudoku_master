@@ -16,7 +16,8 @@ if (!$con){
     error_log('Could not connect: ' . mysqli_error($con));
   }
 
-$sql = "SELECT '$main', '$sub', AVG(`time taken`) FROM `ResultsF` GROUP BY '$main', '$sub'";
+$sql = "SELECT `$main`, `$sub`, AVG(`time taken`) FROM `ResultsF` GROUP BY `$main`, `$sub`";
+error_log("query:".$sql);
 $result = mysqli_query($con,$sql);
 
 if(mysqli_num_rows($result) < 1){
@@ -26,9 +27,10 @@ if(mysqli_num_rows($result) < 1){
 }
 
 $rows = array();
-
+$j = 0;
 while($r = mysqli_fetch_assoc($result)) {
-    $rows[] = $r;
+    $rows[$j] = $r;
+    $j++;
 }
 
 $result->free();

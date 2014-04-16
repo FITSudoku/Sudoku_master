@@ -12,6 +12,11 @@ function drawGraph() {
     if (jsonObj == null) {
         alert ("Data Retrieval failed!");
     }
+    
+    for (var i=0; i < jsonObj.length; i++) {
+        var obj = jsonObj[i];
+        console.log(obj.toString());
+    }
 }
 
 function retrieveData() {
