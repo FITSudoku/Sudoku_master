@@ -27,7 +27,7 @@ if(mysqli_num_rows($result) < 1){
 
 $rows = array();
 
-while($r = myqli_fetch_assoc($result)) {
+while($r = mysqli_fetch_assoc($result)) {
     $rows[] = $r;
 }
 

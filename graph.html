@@ -40,15 +40,15 @@
     <body>
         <h1> Grapher </h1>
         <div id="graph-area"></div>
-        <form action=retrieveData()>
-            Main Category to sort on <select name="main">
-            <option value="gender"> Gender </option>
+        <form onsubmit="drawGraph()">
+            Main Category to sort on <select name="main" id="mainSort">
+            <option selected value="gender"> Gender </option>
             <option value="education"> Education </option>
             <option value="age"> Age </option>
             <option value="experience"> Experience </option>
             </select>
-            Sub Catagory to sort on <select name="sub">
-            <option value="type"> Puzzle Type </option>
+            Sub Catagory to sort on <select name="sub" id="subSort">
+            <option selected value="type"> Puzzle Type </option>
             <option value="diff"> Puzzle Difficulty </option>
             </select>
             <input type="submit" value="Generate Graph"/>
