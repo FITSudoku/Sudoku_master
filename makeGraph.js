@@ -15,8 +15,9 @@ function drawGraph() {
     
     for (var i=0; i < jsonObj.length; i++) {
         var obj = jsonObj[i];
-        console.log(obj.toString());
+        console.log(obj[document.getElementById("mainSort").value]);
     }
+    alert ("finished loop");
 }
 
 function retrieveData() {
