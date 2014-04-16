@@ -13,8 +13,8 @@ function drawGraph() {
         alert ("Data Retrieval failed!");
     }
     
-    for (var i=0; i < jsonObj.length; i++) {
-        var obj = jsonObj[i];
+    for (var key in jsonObj) {
+        var obj = jsonObj[key];
         console.log(obj[document.getElementById("mainSort").value]);
     }
     alert ("finished loop");
